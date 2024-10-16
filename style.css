@@ -30,3 +30,18 @@
     position: relative;
     width: 25px;
 }
+
+.carousel-text {
+    font-family: "Bahnschrift", serif;
+}
+
+.carousel-button {
+    background-color: #ffc107;
+    color: black;
+    border: none;
+}
+
+.carousel-button:hover {
+    background-color: #ffca43;
+}
+
