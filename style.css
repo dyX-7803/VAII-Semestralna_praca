@@ -49,6 +49,10 @@
     background-color: #404040;
 }
 
-.activeNavbarItem {
+.active-navbar-item {
     background-color: #5e5e5e;
+}
+
+.input-search::placeholder {
+    font-size: 12px;
 }
