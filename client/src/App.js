@@ -1,35 +1,19 @@
 import React, {useEffect, useState} from 'react'
 import Header from './components/Header';
+import Faqs from './components/Faqs';
+import Footer from './components/Footer';
 
 function App() {
-
-    const [backendData, setBackendData] = useState([{}]);
-
-    useEffect(() => {
-        fetch("/api").then(
-            response => response.json()
-        ).then(
-            data => {
-                setBackendData(data)
-            }
-        )
-    }, [])
 
   return (
     <div>
 
         <Header/>
-
-        {(typeof backendData.users == 'undefined') ? (
-            <p>Loading...</p>
-        ) : (
-            backendData.users.map((user, i) => (
-                <p key={i}>{user}</p>
-            ))
-        )}
+        <Faqs/>
+        <Footer/>
 
     </div>
   )
-}
+};
 
-export default App
+export default App;
