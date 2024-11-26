@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { Link } from 'react-router-dom';
 
 
 const Header = () => {
@@ -15,14 +16,31 @@ const Header = () => {
         <header class="p-3 bg-dark text-white top-header">
             <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/#" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" onClick={() => handleNavClick('domov')}>
-                    <img class="logo" src="images/logo.png" alt="Logo"/>
-                </a>
+
+                <Link to='/' className='no-decoration-text'>
+                    <a class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" onClick={() => handleNavClick('domov')}>
+                        <img class="logo" src="images/logo.png" alt="Logo"/>
+                    </a>
+                </Link>
+                
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href='/#' className={`nav-link px-2 ${activeItem === 'domov' ? 'active-navbar-item' : ''}`} onClick={() => handleNavClick('domov')}>Domov</a></li>
-                    <li><a href='/#' className={`nav-link px-2 ${activeItem === 'katalog' ? 'active-navbar-item' : ''}`} onClick={() => handleNavClick('katalog')}>Katalóg</a></li>
-                    <li><a href='/#' className={`nav-link px-2 ${activeItem === 'faqs' ? 'active-navbar-item' : ''}`} onClick={() => handleNavClick('faqs')}>FAQs</a></li>
+
+                    <li>
+                        <Link to='/' className='no-decoration-text'>
+                            <a href='/#' className={`nav-link px-2 ${activeItem === 'domov' ? 'active-navbar-item' : ''}`} onClick={() => handleNavClick('domov')}>Domov</a>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to='/katalog' className='no-decoration-text'>
+                            <a href='/#' className={`nav-link px-2 ${activeItem === 'katalog' ? 'active-navbar-item' : ''}`} onClick={() => handleNavClick('katalog')}>Katalóg</a>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to='/faqs' className='no-decoration-text'>
+                        <a href='/#' className={`nav-link px-2 ${activeItem === 'faqs' ? 'active-navbar-item' : ''}`} onClick={() => handleNavClick('faqs')}>FAQs</a>
+                        </Link>
+                    </li>
                     
                 </ul>
 

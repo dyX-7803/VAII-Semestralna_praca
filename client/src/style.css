@@ -66,3 +66,7 @@
     transform: scale(105%);
 }
 
+.no-decoration-text {
+    text-decoration: none;
+}
+
