@@ -1,35 +1,20 @@
-import React, {useState, useEffect} from "react";
-import axios from 'axios';
+import React from "react";
 
-const Item = () => {
-    const [items, setItems] = useState([]);
-    const [error, setError] = useState('');
+const Item = ({id, nazov, popis, cena, pocet_ks}) => {
 
-    useEffect(() => {
-        const fetchItems = async () => {
-            try {
-                const response = await axios.get('/api/polozka');
-                setItems(response.data);
-            } catch (err) {
-                console.error(err);
-                setError('Failed to fetch items');
-            }
-        };
-        fetchItems(); 
-    }, []);
-
-    if (error) return <p>{error}</p>
-    if (!items.length) return <p>Loading...</p>
 
     return (
-        <div>
-            {items.map((item) => (
-                <div key={item.id}>
-                    <h2>
-                        {item.nazov}
-                    </h2>
+        <div class="col">
+                <div class="card card-scale h-100">
+                    <a class="h-100" href="/#">
+                    <img src="images/catalog/picture1.jpg" class="card-img-top h-100 img-fluid" alt={nazov + id}/>
+                    </a>
+                    <div class="card-body">
+                    <h5 class="card-title">{nazov}</h5>
+                    <p class="card-text">{cena}€</p>
+                    <a href="/#" class="btn btn-dark">Pridať do košíka</a>
                 </div>
-            ))}
+            </div>
         </div>
     );
 };

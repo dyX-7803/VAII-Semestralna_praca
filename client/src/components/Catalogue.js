@@ -1,7 +1,30 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import Item from './Item';
+import axios from 'axios';
+
 
 
 const Catalogue = () => {
+
+    const [items, setItems] = useState([]);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const response = await axios.get('/api/polozka');
+                setItems(response.data);
+            } catch (err) {
+                console.error(err);
+                setError('Failed to fetch items');
+            }
+        };
+        fetchItems(); 
+    }, []);
+
+
+    if (error) return <p>{error}</p>
+    //if (!items.length) return <p>Loading...</p>
 
     return (
         <div class="container">
@@ -35,55 +58,16 @@ const Catalogue = () => {
 
             <div class="col-lg-10">
             <div class="p-lg-4 row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
-                <div class="col">
-                <div class="card card-scale h-100">
-                    <a class="h-100" href="#">
-                    <img src="images/catalog/picture1.jpg" class="card-img-top h-100 img-fluid" alt="LeatherJacketImg"/>
-                    </a>
-                    <div class="card-body">
-                    <h5 class="card-title">Kožená bunda</h5>
-                    <p class="card-text">24,99€</p>
-                    <a class="btn btn-dark">Pridať do košíka</a>
-                    </div>
-                </div>
-                </div>
-                <div class="col">
-                <div class="card card-scale h-100">
-                    <a class="h-100" href="#">
-                    <img src="images/catalog/picture2.jpg" class="card-img-top h-100 img-fluid" alt="YellowHoodieImg"/>
-                    </a>
-                    <div class="card-body">
-                    <h5 class="card-title">Žltá mikina</h5>
-                    <p class="card-text">19,99€</p>
-                    <a class="btn btn-dark">Pridať do košíka</a>
-                    </div>
-                </div>
-                </div>
-                <div class="col">
-                <div class="card card-scale h-100">
-                    <a class="h-100" href="#">
-                    <img src="images/catalog/picture3.jpg" class="card-img-top h-100 img-fluid" alt="TrousersImg"/>
-                    </a>
-
-                    <div class="card-body">
-                    <h5 class="card-title">Nohavice</h5>
-                    <p class="card-text">29,99€</p>
-                    <a class="btn btn-dark">Pridať do košíka</a>
-                    </div>
-                </div>
-                </div>
-                <div class="col">
-                <div class="card card-scale h-100">
-                    <a class="h-100" href="#">
-                    <img src="images/catalog/picture4.jpg" class="card-img-top h-100 img-fluid" alt="SneakersImg"/>
-                    </a>
-                    <div class="card-body">
-                    <h5 class="card-title">Bežecké tenisky</h5>
-                    <p class="card-text">39,99€</p>
-                    <a class="btn btn-dark">Pridať do košíka</a>
-                    </div>
-                </div>
-                </div>
+                {items.map(item => (
+                    <Item
+                        key={item.id}
+                        id={item.id}
+                        nazov={item.nazov}
+                        popis={item.popis}
+                        cena={item.cena}
+                        pocet_ks={item.pocet_ks}
+                    />
+                ))}
 
             </div>
             </div>

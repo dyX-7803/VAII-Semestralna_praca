@@ -1,18 +1,13 @@
 const express = require('express')
-const pool = require('./db');
+const itemRoutes = require('./routes/itemRoutes');
+const path = require('path');
 
 const app = express();
 
 app.use(express.json());
 
-app.get('/api/polozka', async (req, res) => {
-    try {
-        const result = await pool.query('SELECT * FROM polozka');
-        res.json(result.rows);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-    }
-});
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use('/api/polozka', itemRoutes);
 
 app.listen(5000, () => {console.log("Server started on port 5000")})
