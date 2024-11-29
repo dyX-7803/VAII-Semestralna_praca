@@ -18,7 +18,7 @@ const Home = () => {
                     <div class="carousel-caption text-start">
                         <h1 class="carousel-text">Mužská móda.</h1>
                         <p class="carousel-text">Elegantné kúsky pre každý štýl. Objavujte trendy pánske oblečenie.</p>
-                        <p><a class="btn btn-lg btn-primary carousel-button" href="#">Prezerať</a></p>
+                        <p><a class="btn btn-lg btn-primary carousel-button" href="/#">Prezerať</a></p>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@ const Home = () => {
                     <div class="carousel-caption">
                         <h1 class="carousel-text">Ženská móda</h1>
                         <p class="carousel-text">Štýlové oblečenie pre moderné ženy. Zvýraznite svoju jedinečnosť.</p>
-                        <p><a class="btn btn-lg btn-primary carousel-button" href="#">Katalóg</a></p>
+                        <p><a class="btn btn-lg btn-primary carousel-button" href="/#">Katalóg</a></p>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@ const Home = () => {
                     <div class="carousel-caption text-end">
                         <h1 class="carousel-text">Detská móda</h1>
                         <p class="carousel-text">Pohodlie a štýl pre najmenších. Oblečenie pre každý detský krok.</p>
-                        <p><a class="btn btn-lg btn-primary carousel-button" href="#">Prezerať</a></p>
+                        <p><a class="btn btn-lg btn-primary carousel-button" href="/#">Prezerať</a></p>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@ const Home = () => {
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
                     <div class="col">
                         <div class="card card-scale w-75 mx-auto">
-                            <a href="#">
+                            <a href="/#">
                                 <img src="images/catalog/picture4.jpg" class="card-img-top" alt="..."/>
                             </a>
 
@@ -74,7 +74,7 @@ const Home = () => {
                     </div>
                     <div class="col">
                         <div class="card card-scale w-75 mx-auto">
-                            <a href="#">
+                            <a href="/#">
                                 <img src="images/catalog/picture1.jpg" class="card-img-top" alt="..."/>
                             </a>
 
@@ -86,7 +86,7 @@ const Home = () => {
                     </div>
                     <div class="col">
                         <div class="card card-scale w-75 mx-auto">
-                            <a href="#">
+                            <a href="/#">
                                 <img src="images/catalog/picture3.jpg" class="card-img-top" alt="..."/>
                             </a>
 

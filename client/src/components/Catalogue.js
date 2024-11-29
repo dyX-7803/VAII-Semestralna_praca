@@ -1,10 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import Item from './Item';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 
 const Catalogue = () => {
+
+    const handleTitle = (text) => {
+        document.title = text;
+    };
 
     const [items, setItems] = useState([]);
     const [error, setError] = useState('');
@@ -28,6 +33,12 @@ const Catalogue = () => {
 
     return (
         <div class="container">
+            <Link to='/katalog/pridat' className='no-decoration-text' onClick={() => handleTitle('WearWave | Pridať položku')}>
+                <button class="btn btn-primary">
+                    Pridať
+                </button>
+            </Link>
+    
         <div class="row">
             <div class="col h-100 col-lg-2 g-4">
             <div class="card p-3 mb-4 border-3 border-black">
