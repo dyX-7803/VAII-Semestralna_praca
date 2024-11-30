@@ -62,9 +62,9 @@ const Catalogue = () => {
                 <label class="form-check-label" for="flexCheckChildren">
                     Deti
                 </label>
-                </div>
             </div>
             </div>
+        </div>
 
 
 
