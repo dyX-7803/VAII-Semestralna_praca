@@ -4,7 +4,7 @@ const itemController = require('../controllers/itemController');
 const router = express.Router();
 
 router.get('/', itemController.getAllItems);
-router.post('/', itemController.addItem);
-
+router.post('/add', itemController.addItem);
+router.get('/last', itemController.getLastItem);
 
 module.exports = router;

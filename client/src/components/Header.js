@@ -4,10 +4,13 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
 
-    const [activeItem, setActiveItem] = useState('domov');
+    const [activeItem, setActiveItem] = useState(() => {
+        return localStorage.getItem('activeItem') || 'domov';
+    });
 
     const handleNavClick = (item) => {
         setActiveItem(item);
+        localStorage.setItem('activeItem', item);
     };
 
     const handleTitle = (text) => {

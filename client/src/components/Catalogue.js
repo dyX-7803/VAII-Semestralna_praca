@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Item from './Item';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
@@ -27,18 +27,19 @@ const Catalogue = () => {
         fetchItems(); 
     }, []);
 
-
     if (error) return <p>{error}</p>
     //if (!items.length) return <p>Loading...</p>
 
     return (
         <div class="container">
-            <Link to='/katalog/pridat' className='no-decoration-text' onClick={() => handleTitle('WearWave | Pridať položku')}>
-                <button class="btn btn-primary">
-                    Pridať
-                </button>
-            </Link>
-    
+                
+                <div class="pt-3 text-center">
+                    <Link to='/katalog/pridat' className='no-decoration-text' onClick={() => handleTitle('WearWave | Pridať položku')}>
+                        <button class="btn btn-primary"> Pridať položku
+                        </button>
+                    </Link>
+                </div>
+                
         <div class="row">
             <div class="col h-100 col-lg-2 g-4">
             <div class="card p-3 mb-4 border-3 border-black">
@@ -68,7 +69,7 @@ const Catalogue = () => {
 
 
             <div class="col-lg-10">
-            <div class="p-lg-4 row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
+            <div class="p-lg-4 row row-cols-1 row-cols-lg-4 row-cols-md-2">
                 {items.map(item => (
                     <Item
                         key={item.id}
