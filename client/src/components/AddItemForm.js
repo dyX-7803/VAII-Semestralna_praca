@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ const AddItemForm = () => {
         const [pocet_ks, setPocetKs] = useState('');
 
         const [selectedMainImage, setSelectedMainImage] = useState(null);
+        const [selectedOtherImages, setSelectedOtherImages] = useState([]);
 
         const handleNazovChange = (e) => setNazov(e.target.value);
         const handlePopisChange = (e) => setPopis(e.target.value);
@@ -22,6 +23,16 @@ const AddItemForm = () => {
 
         const handleImageChange = (e) => {
             setSelectedMainImage(e.target.files[0]);
+        };
+
+        const handleOtherImagesChange = (e) => {
+            const newImages = Array.from(e.target.files);
+            //setSelectedOtherImages(e.target.files);
+            setSelectedOtherImages((prevImages) => [...prevImages, ...newImages]);
+        };
+
+        const handleRemoveOtherImage = (index) => {
+            setSelectedOtherImages((prevFiles) => prevFiles.filter((_, i) => i !== index));
         };
 
         const handleSubmit = async () => {
@@ -44,13 +55,33 @@ const AddItemForm = () => {
             formData.append('image', selectedMainImage);
 
             try {
-                const response = await axios.post('/api/obrazky/upload', formData, {
+                await axios.post('/api/obrazky/upload', formData, {
                     headers: { 'Content-Type': 'multipart/form-data'},
                 });
             } catch (error) {
                 console.error('Chyba pri pridávaní obrázka.', error);
                 alert('Nepodarilo sa nahrať obrázok.');
             }
+
+
+            try {
+                  const uploadPromises = Array.from(selectedOtherImages).map(async (image) => {
+                  const formData = new FormData();
+                  formData.append('image', image);
+          
+                  await axios.post('/api/obrazky/upload', formData, {
+                    headers: {
+                      'Content-Type': 'multipart/form-data',
+                    },
+                  });
+                });
+          
+                await Promise.all(uploadPromises);
+              } catch (error) {
+                console.error('Chyba pri pridávaní obrázkov.', error);
+                alert('Nepodarilo sa nahrať obrázky.');
+              }
+
         };
 
 
@@ -81,8 +112,31 @@ const AddItemForm = () => {
             </div>
             
             <div class="mb-3 m-4">
-                <label for="DalsieObrazky" class="form-label">Ďalšie obrázky</label>
-                <input class="form-control" type="file" id="DalsieObrazky" multiple/>
+                <label class="form-label">Ďalšie obrázky</label>
+                <input class="form-control" type="file" id="DalsieObrazky" multiple onChange={handleOtherImagesChange} style={{ display: 'none' }}/>
+                <label
+                    className="row m-1"
+                    htmlFor="DalsieObrazky"
+                    style={{
+                    cursor: 'pointer',
+                    padding: '10px',
+                    background: 'gray',
+                    color: 'white',
+                    borderRadius: '5px',
+                    }}
+                >
+                    Vybrať súbory
+                </label>
+                <div>
+                    {selectedOtherImages.map((image, index) => (
+                    <div key={index} style={{ marginTop: '10px' }}>
+                        <span>{image.name}</span>
+                        <button className='btn btn-danger' onClick={() => handleRemoveOtherImage(index)} style={{ marginLeft: '10px' }}>
+                            Odstrániť
+                        </button>
+                    </div>
+                    ))}
+                </div>
             </div>
 
             <div class="mb-3 m-4">

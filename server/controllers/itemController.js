@@ -49,15 +49,13 @@ exports.deleteItemById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // 1. Získať všetky cesty k súborom z tabuľky "obrazky"
         const { rows: images } = await pool.query(
             'SELECT cesta FROM obrazky WHERE polozka_id = $1',
             [id]
         );
 
-        // 2. Vymazať súbory na disku
         for (const image of images) {
-            const fullPath = path.join(__dirname, '..' , image.cesta); // Predpokladá sa, že cesta je relatívna
+            const fullPath = path.join(__dirname, '..' , image.cesta);
             fs.unlink(fullPath, (err) => {
                 if (err) {
                     console.error(`Chyba pri mazaní súboru ${image.cesta}:`, err);
@@ -67,13 +65,10 @@ exports.deleteItemById = async (req, res) => {
             });
         }
 
-        // 3. Odstrániť riadky z tabuľky "obrazky"
         await pool.query('DELETE FROM obrazky WHERE polozka_id = $1', [id]);
 
-        // 4. Odstrániť položku z tabuľky "polozka"
         await pool.query('DELETE FROM polozka WHERE id = $1', [id]);
 
-        // 5. Odpoveď klientovi
         res.json({ message: 'Položka a súvisiace obrázky boli úspešne vymazané.' });
 
     } catch (error) {
