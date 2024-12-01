@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Home from './components/Home';
 import Catalogue from './components/Catalogue';
 import AddItemForm from './components/AddItemForm';
+import EditItemForm from './components/EditItemForm';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
               <Route path='/katalog' element={<Catalogue/>}/>
               <Route path='/faqs' element={<Faqs/>}/>
               <Route path='/katalog/pridat' element={<AddItemForm/>}/>
+              <Route path='/katalog/editovat/:id/:nazov/:popis/:cena/:pocet_ks' element={<EditItemForm/>}/>
             </Routes>
           <Footer/>
       </Router>

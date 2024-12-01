@@ -4,6 +4,7 @@ import {BiPencil} from 'react-icons/bi';
 import {FaTrash} from 'react-icons/fa';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { Link} from 'react-router-dom';
 
 const Item = ({id, nazov, popis, cena, pocet_ks}) => {
 
@@ -53,9 +54,12 @@ const Item = ({id, nazov, popis, cena, pocet_ks}) => {
 
 
                         <div className="d-flex gap-1">
+                        <Link to={`/katalog/editovat/${id}/${nazov}/${popis}/${cena}/${pocet_ks}`} className='no-decoration-text' >
                             <button class="btn btn-primary ">
                                     <BiPencil size={18}></BiPencil>
                             </button>
+                        </Link>
+                            
                             <button type="button" class="btn btn-danger " data-toggle="modal" data-targer="#exampleModal" onClick={handleShow}>
                                     <FaTrash size={18}></FaTrash>
                             </button>
@@ -77,30 +81,8 @@ const Item = ({id, nazov, popis, cena, pocet_ks}) => {
 
 
 
-                            <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        ...
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        
-                    </div>
-
-                    
+                        </div>
+                    </div>     
                 </div>
             </div>
         </div>

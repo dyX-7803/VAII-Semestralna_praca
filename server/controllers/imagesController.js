@@ -49,3 +49,12 @@ exports.uploadImage = async (req, res) => {
   };
 
 
+  exports.deleteImageById = async (req, res) => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  };
+
+
