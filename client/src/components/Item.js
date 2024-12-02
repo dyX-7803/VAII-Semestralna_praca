@@ -40,44 +40,44 @@ const Item = ({id, nazov, popis, cena, pocet_ks}) => {
 
     return (
         <div class="col mb-4">
-                <div class="card card-scale h-100">
+            <div class="card card-scale h-100">
                     <a class="h-100" href="/#">
 
                     <img loading="lazy" src={`${baseUrl}${path}`} class="card-img-top h-100 img-fluid" alt={nazov + id}/>
                     </a>
-                    <div class="card-body">
+                <div class="card-body">
                     <h5 class="card-title">{nazov}</h5>
                     <p class="card-text">{cena}€</p>
 
-                    <div class="d-flex align-items-center gap-2">
-                        <a href="/#" class="btn btn-dark">Pridať do košíka</a>
+                        <div class="d-flex align-items-center gap-2">
+                            <a href="/#" class="btn btn-dark">Pridať do košíka</a>
 
 
-                        <div className="d-flex gap-1">
-                        <Link to={`/katalog/editovat/${id}/${nazov}/${popis}/${cena}/${pocet_ks}`} className='no-decoration-text' >
-                            <button class="btn btn-primary ">
-                                    <BiPencil size={18}></BiPencil>
-                            </button>
-                        </Link>
-                            
-                            <button type="button" class="btn btn-danger " data-toggle="modal" data-targer="#exampleModal" onClick={handleShow}>
-                                    <FaTrash size={18}></FaTrash>
-                            </button>
+                            <div className="d-flex gap-1">
+                            <Link to={`/katalog/editovat/${id}/${nazov}/${popis}/${cena}/${pocet_ks}`} className='no-decoration-text' >
+                                <button class="btn btn-primary ">
+                                        <BiPencil size={18}></BiPencil>
+                                </button>
+                            </Link>
+                                
+                                <button type="button" class="btn btn-danger " data-toggle="modal" data-targer="#exampleModal" onClick={handleShow}>
+                                        <FaTrash size={18}></FaTrash>
+                                </button>
 
-                            <Modal show={show} onHide={handleClose}>
-                                <Modal.Header closeButton>
-                                <Modal.Title>Odstránenie položky</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>Skutočne chceš odstrániť túto položku?</Modal.Body>
-                                <Modal.Footer>
-                                <Button variant="secondary" onClick={handleClose}>
-                                    Zružiť
-                                </Button>
-                                <Button variant="danger" onClick={() => {handleDeleteItem(); handleClose(); window.location.reload()}}>
-                                    Zmazať
-                                </Button>
-                                </Modal.Footer>
-                            </Modal>
+                                <Modal show={show} onHide={handleClose}>
+                                    <Modal.Header closeButton>
+                                    <Modal.Title>Odstránenie položky</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>Skutočne chceš odstrániť túto položku?</Modal.Body>
+                                    <Modal.Footer>
+                                    <Button variant="secondary" onClick={handleClose}>
+                                        Zružiť
+                                    </Button>
+                                    <Button variant="danger" onClick={() => {handleDeleteItem(); handleClose(); window.location.reload()}}>
+                                        Zmazať
+                                    </Button>
+                                    </Modal.Footer>
+                                </Modal>
 
 
 

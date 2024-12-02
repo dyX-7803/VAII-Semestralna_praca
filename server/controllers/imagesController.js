@@ -34,7 +34,7 @@ exports.uploadImage = async (req, res) => {
   };
 
 
-  exports.getMainImagePath = async (req, res) => {
+  exports.getMainImagePathByItemId = async (req, res) => {
     try {
         const {id} = req.params;
         const result = await pool.query('SELECT * FROM obrazky WHERE polozka_id = $1 ORDER BY id ASC LIMIT 1', [id]);
@@ -48,12 +48,40 @@ exports.uploadImage = async (req, res) => {
     }
   };
 
+  exports.getAllImagesByItemId = async (req, res) => {
+    try {
+      const {id} = req.params;
+      const result = await pool.query('SELECT * FROM obrazky WHERE polozka_id = $1 ORDER BY id ASC', [id]);
+      res.json(result.rows);
+    } catch (error) {
+      console.error('Chyba naciatavania obrazkov', error);
+      res.status(500).json({message: 'Obrazky sa nepodarilo nacitat'});
+    }
+  };
 
   exports.deleteImageById = async (req, res) => {
     try {
-      
+      const {id} = req.params;
+      const result = await pool.query('SELECT cesta FROM obrazky WHERE id = $1 LIMIT 1', [id]);
+
+      const imagePath = result.rows[0].cesta;
+
+      console.log(imagePath);
+      const fullPath = path.join(__dirname, '..' , imagePath);
+      fs.unlink(fullPath, (err) => {
+        if (err) {
+          console.error(`Chyba pri mazaní súboru ${imagePath}:`, err);
+        } else {
+          console.log(`Súbor ${imagePath} úspešne vymazaný.`);
+        }
+      });
+
+      await pool.query('DELETE FROM obrazky WHERE id = $1', [id]);
+      res.json({ message: 'Obrázok vymazaný.' });
+
     } catch (error) {
-      
+      console.error('Chyba pri odstraňovaní obrázku.', error);
+      res.status(500).json({ message: 'Chyba pri odstraňovaní obrázku z databázy.' });
     }
   };
 
