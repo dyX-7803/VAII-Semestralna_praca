@@ -12,8 +12,11 @@ const EditItemForm = () => {
     const handlePocetKsChange = (e) => {pocet_ks = e.target.value};
 
     const [mainImage, setMainImage] = useState('');
+    const [newMainImage, setNewMainImage] = useState(null);
     const [otherImages, setOtherImages] = useState([]);
     const [selectedIds, setSelectedIds] = useState([]);
+    const [newOtherImages, setNewOtherImages] = useState([]);
+    const [isMainImageChanged, setIsMainImageChanged] = useState(false);
 
     const handleSelectedIdsChange = (imageId) => {
         setSelectedIds((prev) => {
@@ -25,8 +28,19 @@ const EditItemForm = () => {
         });
     };
 
-    const [isMainImageChanged, setIsMainImageChanged] = useState(false);
-    //const [areOtherImagesChanged, setAreOtherImagesChanged] = useState(false);
+    const handleOtherImagesChange = (e) => {
+        const newImages = Array.from(e.target.files);
+        setNewOtherImages((prevImages) => [...prevImages, ...newImages]);
+    };
+
+    const handleRemoveOtherImage = (index) => {
+        setNewOtherImages((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    };
+
+    const handleNewMainImage = (e) => {
+        setNewMainImage(e.target.files[0])
+    }
+
 
     useEffect(() => {
         const fetchItems = async () => {
@@ -51,6 +65,39 @@ const EditItemForm = () => {
         } catch (error) {
             console.error('Chyba pri odstraňovaní obrázkov', error);
             alert('Niečo sa pokazilo pri odstaňovaní obrázkov!');
+        }
+
+        try {
+            const uploadPromises = Array.from(newOtherImages).map(async (image) => {
+            const formData = new FormData();
+            formData.append('image', image);
+    
+            await axios.post('/api/obrazky/upload', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+          });
+    
+          await Promise.all(uploadPromises);
+        } catch (error) {
+          console.error('Chyba pri pridávaní obrázkov.', error);
+          alert('Nepodarilo sa nahrať obrázky.');
+        }
+
+
+        if (isMainImageChanged)
+        {
+            try {
+                const formData = new FormData();
+                formData.append('image', newMainImage);
+                await axios.put(`/api/obrazky/updateMainImageByItemId/${id}`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data'},
+                });
+            } catch (error) {
+                console.error('Chyba pri updatovaní hlavného obrázka.', error);
+                alert('Nepodarilo sa updatnúť hlavný obrázok.');
+            }
         }
     };
 
@@ -80,7 +127,7 @@ const EditItemForm = () => {
                 <label for="HlavnyObrazok" class="form-label">Hlavný obrázok</label>
 
                 {isMainImageChanged ? (
-                    <input class="form-control" type="file" id="HlavnyObrazok" required/>
+                    <input class="form-control" type="file" id="HlavnyObrazok" onChange={handleNewMainImage} required/>
                 ) : (
                     <div class="row row-cols-2 row-cols-lg-4 row-cols-md-4">
                         <div class="col">
@@ -147,7 +194,7 @@ const EditItemForm = () => {
                 
 
 
-                <input class="form-control" type="file" id="DalsieObrazky" multiple style={{ display: 'none' }}/>
+                <input class="form-control" type="file" id="DalsieObrazky" onChange={handleOtherImagesChange} multiple style={{ display: 'none' }}/>
                 <label
                     className="row m-1"
                     htmlFor="DalsieObrazky"
@@ -159,8 +206,19 @@ const EditItemForm = () => {
                     borderRadius: '5px',
                     }}
                 >
-                    Vybrať súbory
+                    Vybrať ďalšie súbory
                 </label>
+
+                <div>
+                    {newOtherImages.map((image, index) => (
+                    <div key={index} style={{ marginTop: '10px' }}>
+                        <span>{image.name}</span>
+                        <button className='btn btn-danger' onClick={() => handleRemoveOtherImage(index)} style={{ marginLeft: '10px' }}>
+                            Odstrániť
+                        </button>
+                    </div>
+                    ))}
+                </div>
             </div>
 
             <div class="mb-3 m-4">

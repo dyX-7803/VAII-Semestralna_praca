@@ -65,8 +65,6 @@ exports.uploadImage = async (req, res) => {
       const result = await pool.query('SELECT cesta FROM obrazky WHERE id = $1 LIMIT 1', [id]);
 
       const imagePath = result.rows[0].cesta;
-
-      console.log(imagePath);
       const fullPath = path.join(__dirname, '..' , imagePath);
       fs.unlink(fullPath, (err) => {
         if (err) {
@@ -82,6 +80,32 @@ exports.uploadImage = async (req, res) => {
     } catch (error) {
       console.error('Chyba pri odstraňovaní obrázku.', error);
       res.status(500).json({ message: 'Chyba pri odstraňovaní obrázku z databázy.' });
+    }
+  };
+
+  exports.updateMainImage = async (req, res) => {
+    try {
+      const {id} = req.params;
+      const filePath = path.join('uploads/images', req.file.filename).replaceAll('\\', '/');
+      
+      const result = await pool.query('SELECT * FROM obrazky WHERE polozka_id = $1 ORDER BY id ASC LIMIT 1', [id]);
+      const imagePath = result.rows[0].cesta;
+      const fullPath = path.join(__dirname, '..' , imagePath);
+      fs.unlink(fullPath, (err) => {
+        if (err) {
+          console.error(`Chyba pri mazaní súboru ${imagePath}:`, err);
+        } else {
+          console.log(`Súbor ${imagePath} úspešne vymazaný.`);
+        }
+      });
+
+      await pool.query('UPDATE obrazky SET cesta = $1 WHERE id = (SELECT id FROM obrazky WHERE polozka_id = $2 ORDER BY id ASC LIMIT 1)', 
+        [filePath, id]);
+      
+      res.json({message: 'Obrazok uspesne updatnuty'});
+    } catch (error) {
+      console.error('Chyba pri updatovaní hlavného obrázku.', error);
+      res.status(500).json({ message: 'Chyba pri updovaní hlavného obrázku v databáze.' });
     }
   };
 

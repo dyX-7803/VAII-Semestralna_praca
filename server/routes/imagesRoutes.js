@@ -7,5 +7,6 @@ router.post('/upload', imagesController.upload.single('image'), imagesController
 router.get('/getPath/:id', imagesController.getMainImagePathByItemId);
 router.get('/getAllImagesByItemId/:id', imagesController.getAllImagesByItemId);
 router.delete('/deleteById/:id', imagesController.deleteImageById);
+router.put('/updateMainImageByItemId/:id', imagesController.upload.single('image'), imagesController.updateMainImage);
 
 module.exports = router;
