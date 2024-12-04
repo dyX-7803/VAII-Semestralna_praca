@@ -54,7 +54,7 @@ const Item = ({id, nazov, popis, cena, pocet_ks}) => {
 
 
                             <div className="d-flex gap-1">
-                            <Link to={`/katalog/editovat/${id}/${nazov}/${popis}/${cena}/${pocet_ks}`} className='no-decoration-text' >
+                            <Link to={`/katalog/editovat/${id}`} className='no-decoration-text' >
                                 <button class="btn btn-primary ">
                                         <BiPencil size={18}></BiPencil>
                                 </button>

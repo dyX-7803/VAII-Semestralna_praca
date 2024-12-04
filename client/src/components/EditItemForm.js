@@ -1,15 +1,18 @@
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const EditItemForm = () => {
-    const { id, nazov, popis, cena, pocet_ks} = useParams();
+
+    const { id } = useParams();
+    const navigate = useNavigate();
     const baseUrl = 'http://localhost:5000/';
-    const [newName, setNewName] = useState(nazov);
-    const [newDesc, setNewDesc] = useState(popis);
-    const [newPrice, setNewPrice] = useState(cena);
-    const [newQuant, setNewQuant] = useState(pocet_ks);
+    const [newName, setNewName] = useState('');
+    const [newDesc, setNewDesc] = useState('');
+    const [newPrice, setNewPrice] = useState('');
+    const [newQuant, setNewQuant] = useState('');
 
     const [mainImage, setMainImage] = useState('');
     const [newMainImage, setNewMainImage] = useState(null);
@@ -17,6 +20,7 @@ const EditItemForm = () => {
     const [selectedIds, setSelectedIds] = useState([]);
     const [newOtherImages, setNewOtherImages] = useState([]);
     const [isMainImageChanged, setIsMainImageChanged] = useState(false);
+    const [errors, setErrors] = useState({});
 
     const handleSelectedIdsChange = (imageId) => {
         setSelectedIds((prev) => {
@@ -26,6 +30,10 @@ const EditItemForm = () => {
               return [...prev, imageId];
             }
         });
+    };
+
+    const handleNewName = (e) => {
+        setNewName(e.target.value);
     };
 
     const handleOtherImagesChange = (e) => {
@@ -38,13 +46,33 @@ const EditItemForm = () => {
     };
 
     const handleNewMainImage = (e) => {
+        const validImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+        if (!validImageTypes.includes(e.target.files[0].type)) {
+            e.target.value = '';
+            setNewMainImage(null);
+            alert('Obrázok musí byť type png/jpg/jpeg!');
+            return;
+        }
         setNewMainImage(e.target.files[0])
     }
 
 
     useEffect(() => {
         const fetchItems = async () => {
+
             try {
+                const response = await axios.get(`/api/polozka/getDetailsById/${id}`);
+                const { nazov, popis, cena, pocet_ks } = response.data;
+                setNewName(nazov);
+                setNewDesc(popis);
+                setNewPrice(cena);
+                setNewQuant(pocet_ks);
+            } catch (err) {
+                console.error(err);
+            }
+
+            try {
+                
                 const response = await axios.get(`/api/obrazky/getAllImagesByItemId/${id}`);
                 setMainImage(response.data[0]);
                 response.data.shift();
@@ -57,8 +85,45 @@ const EditItemForm = () => {
     }, [id]);
 
 
+    const validate = () => {
+        const errors = {};
+
+        if (!newName.trim())
+        {
+            errors.newName = "Názov nesmie byť prázdny!";
+        }
+        if (!newPrice || isNaN(Number(newPrice)))
+        {
+            errors.newPrice = "Cena musí byť číslo!";
+        } else if (Number(newPrice) <= 0) 
+        {
+            errors.newPrice = "Cena musí byť väčšia ako 0!";
+        }
+        if (!newQuant || !Number.isInteger(Number(newQuant))) {
+            errors.newQuant = "Počet kusov musí byť celé číslo!";
+        } else if (Number(newQuant) < 0) {
+            errors.newQuant = "Počet kusov musí byť 0 alebo viac!";
+        }
+
+        if (isMainImageChanged) {
+            if (!newMainImage) {
+                errors.newMainImage = "Hlavný obrázok musí byť zvolený!"
+            }
+        }
+
+        return errors;
+    };
+
     const handleSubmit = async () => {
 
+        const validationErr = validate();
+        if (Object.keys(validationErr).length > 0)
+        {
+            setErrors(validationErr);
+            return;
+        }
+
+        setErrors({});
         const updatedItem = {
             nazov: newName,
             popis: newDesc,
@@ -116,18 +181,20 @@ const EditItemForm = () => {
           alert('Nepodarilo sa nahrať obrázky.');
         }
 
-
+        navigate('/katalog');
     };
 
     return(
         <div>
             <div class="mb-3 m-4">
                 <label for="Nazov" class="form-label">Názov</label>
-                <input type="text" class="form-control" id="Nazov" value={newName} onChange={(e) => setNewName(e.target.value)} required/>
+                <input type="text" className={`form-control ${errors.newName ? 'input-error' : ''}`} id="Nazov" value={newName} onChange={handleNewName} required/>
+                {errors.newName && <p className='error'>{errors.newName}</p>}
             </div>
             <div class="mb-3 m-4">
                 <label for="Cena" class="form-label">Cena (€)</label>
-                <input type="text" class="form-control" id="Cena" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} required/>
+                <input type="text" className={`form-control ${errors.newPrice ? 'input-error' : ''}`} id="Cena" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} required/>
+                {errors.newPrice && <p className='error'>{errors.newPrice}</p>}
             </div>
             <div class="mb-3 m-4">
                 <label for="Popis" class="form-label">Popis</label>
@@ -135,7 +202,8 @@ const EditItemForm = () => {
             </div>
             <div class="mb-3 m-4">
                 <label for="PocetKs" class="form-label">Počet kusov</label>
-                <input type="text" class="form-control" value={newQuant} id="PocetKs" onChange={(e) => setNewQuant(e.target.value)} required/>
+                <input type="text" className={`form-control ${errors.newQuant ? 'input-error' : ''}`} value={newQuant} id="PocetKs" onChange={(e) => setNewQuant(e.target.value)} required/>
+                {errors.newQuant && <p className='error'>{errors.newQuant}</p>}
             </div>
             
 
@@ -145,7 +213,11 @@ const EditItemForm = () => {
                 <label for="HlavnyObrazok" class="form-label">Hlavný obrázok</label>
 
                 {isMainImageChanged ? (
-                    <input class="form-control" type="file" id="HlavnyObrazok" onChange={handleNewMainImage} required/>
+                    <div>
+                        <input className={`form-control ${errors.newMainImage ? 'input-error' : ''}`} type="file" id="HlavnyObrazok" onChange={handleNewMainImage} required/>
+                        {errors.newMainImage && <p className='error'>{errors.newMainImage}</p>}
+                    </div>
+                    
                 ) : (
                     <div class="row row-cols-2 row-cols-lg-4 row-cols-md-4">
                         <div class="col">
@@ -240,7 +312,7 @@ const EditItemForm = () => {
             </div>
 
             <div class="mb-3 m-4">
-                <Link to='/katalog' className='no-decoration-text'>
+                <Link className='no-decoration-text'>
                     <button class="btn btn-primary" onClick={handleSubmit}>
                         Uložiť
                     </button>

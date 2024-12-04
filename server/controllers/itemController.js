@@ -25,6 +25,20 @@ exports.getLastItem = async (req, res) => {
     }
 };
 
+exports.getItemDetailsById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await pool.query('SELECT nazov, popis, cena, pocet_ks FROM polozka WHERE id = $1 LIMIT 1', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Nenašla sa žiadna položka.' });
+        }
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Chyba pri získavaní položky:', error);
+        res.status(500).json({ message: 'Chyba pri získavaní položky.' });
+    }
+};
+
 
 exports.addItem = async (req, res) => {
     const {nazov, popis, cena, pocet_ks} = req.body;

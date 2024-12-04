@@ -1,6 +1,6 @@
 const validateRequired = (value) => value && value.trim() != '';
 
-const validateIsNumberAndPositive = (value) => !isNan(value) && value > 0;
+const validateIsNumberAndPositive = (value) => !isNaN(value) && value > 0;
 
 const validateIsIntegerAndPositive = (value) => Number.isInteger(Number(value)) && value > 0;
 
@@ -14,4 +14,4 @@ const validateImage = (file) => {
 };
 
 
-export {validateRequired, validateIsNumberAndPositive, validateIsIntegerAndPositive, validateImage};
+module.exports = {validateRequired, validateIsNumberAndPositive, validateIsIntegerAndPositive, validateImage};

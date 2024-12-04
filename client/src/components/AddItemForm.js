@@ -1,6 +1,6 @@
 import React, { useState} from 'react';
 import axios from 'axios';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const AddItemForm = () => {
@@ -25,6 +25,14 @@ const AddItemForm = () => {
         const handlePocetKsChange = (e) => setPocetKs(e.target.value);
 
         const handleImageChange = (e) => {
+            const validImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+            if (!validImageTypes.includes(e.target.files[0].type)) {
+                e.target.value = '';
+                setSelectedMainImage(null);
+                alert('Obrázok musí byť type png/jpg/jpeg!');
+                return;
+            }
+
             setSelectedMainImage(e.target.files[0]);
         };
 

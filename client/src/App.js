@@ -21,7 +21,7 @@ function App() {
               <Route path='/katalog' element={<Catalogue/>}/>
               <Route path='/faqs' element={<Faqs/>}/>
               <Route path='/katalog/pridat' element={<AddItemForm/>}/>
-              <Route path='/katalog/editovat/:id/:nazov/:popis/:cena/:pocet_ks' element={<EditItemForm/>}/>
+              <Route path='/katalog/editovat/:id' element={<EditItemForm/>}/>
             </Routes>
           <Footer/>
       </Router>
