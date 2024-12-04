@@ -26,7 +26,7 @@ const Header = () => {
 
                 <Link to='/' className='no-decoration-text' onClick={() => handleTitle('WearWave | Domov')}>
                     <a href='/#' class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" onClick={() => handleNavClick('domov')}>
-                        <img class="logo" src="images/logo.png" alt="Logo"/>
+                        <img class="logo" src="/images/logo.png" alt="Logo"/>
                     </a>
                 </Link>
                 
@@ -54,7 +54,7 @@ const Header = () => {
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 search-bar">
                     <input type="search" class="form-control form-control-dark input-search" placeholder="Čo hľadáte? (značka, druh...)" aria-label="Search"/>
                     <button class="search-button" type="submit">
-                        <img src="images/search-icon.png" alt="SearchIcon" class="search-icon"/>
+                        <img src="/images/search-icon.png" alt="SearchIcon" class="search-icon"/>
                     </button>
                 </form>
 

@@ -70,3 +70,11 @@
     text-decoration: none;
 }
 
+.error {
+    color: red;
+}
+
+.input-error {
+    border: 2px solid red !important;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}

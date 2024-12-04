@@ -8,7 +8,7 @@ const Footer = () => {
             <div class="row">
             <div class="col-lg-3">
                 <div class="lc-block mb-4 text-center">
-                <img class="img-fluid" alt="logo" src="images/logo.png"/>
+                <img class="img-fluid" alt="logo" src="/images/logo.png"/>
                 </div>
                 <div class="lc-block small">
                 <div contenteditable="true" class="text-center">

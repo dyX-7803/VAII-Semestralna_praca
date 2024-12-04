@@ -6,10 +6,10 @@ import { Link, useParams } from 'react-router-dom';
 const EditItemForm = () => {
     const { id, nazov, popis, cena, pocet_ks} = useParams();
     const baseUrl = 'http://localhost:5000/';
-    const handleNazovChange = (e) => {nazov = e.target.value};
-    const handlePopisChange = (e) => {popis = e.target.value};
-    const handleCenaChange = (e) => {cena = e.target.value};
-    const handlePocetKsChange = (e) => {pocet_ks = e.target.value};
+    const [newName, setNewName] = useState(nazov);
+    const [newDesc, setNewDesc] = useState(popis);
+    const [newPrice, setNewPrice] = useState(cena);
+    const [newQuant, setNewQuant] = useState(pocet_ks);
 
     const [mainImage, setMainImage] = useState('');
     const [newMainImage, setNewMainImage] = useState(null);
@@ -54,10 +54,41 @@ const EditItemForm = () => {
             }
         };
         fetchItems(); 
-    }, []);
+    }, [id]);
 
 
     const handleSubmit = async () => {
+
+        const updatedItem = {
+            nazov: newName,
+            popis: newDesc,
+            cena: newPrice,
+            pocet_ks: newQuant,
+        };
+
+        try {
+            await axios.put(`/api/polozka/updateItemById/${id}`, updatedItem);
+        } catch (error) {
+            console.error('Chyba pri update položky.', error);
+            alert('Chyba pri update položky.');
+        }
+
+
+        if (isMainImageChanged)
+        {
+                try {
+                    const formData = new FormData();
+                    formData.append('image', newMainImage);
+                    await axios.put(`/api/obrazky/updateMainImageByItemId/${id}`, formData, {
+                        headers: { 'Content-Type': 'multipart/form-data'},
+                    });
+                } catch (error) {
+                    console.error('Chyba pri updatovaní hlavného obrázka.', error);
+                    alert('Nepodarilo sa updatnúť hlavný obrázok.');
+                }
+        }
+
+
         try {
             for (const imageId of selectedIds) {
                 await axios.delete(`/api/obrazky/deleteById/${imageId}`);
@@ -72,7 +103,7 @@ const EditItemForm = () => {
             const formData = new FormData();
             formData.append('image', image);
     
-            await axios.post('/api/obrazky/upload', formData, {
+            await axios.post(`/api/obrazky/upload/${id}`, formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
@@ -86,38 +117,25 @@ const EditItemForm = () => {
         }
 
 
-        if (isMainImageChanged)
-        {
-            try {
-                const formData = new FormData();
-                formData.append('image', newMainImage);
-                await axios.put(`/api/obrazky/updateMainImageByItemId/${id}`, formData, {
-                    headers: { 'Content-Type': 'multipart/form-data'},
-                });
-            } catch (error) {
-                console.error('Chyba pri updatovaní hlavného obrázka.', error);
-                alert('Nepodarilo sa updatnúť hlavný obrázok.');
-            }
-        }
     };
 
     return(
         <div>
             <div class="mb-3 m-4">
                 <label for="Nazov" class="form-label">Názov</label>
-                <input type="text" class="form-control" id="Nazov" value={nazov} onChange={handleNazovChange} required/>
+                <input type="text" class="form-control" id="Nazov" value={newName} onChange={(e) => setNewName(e.target.value)} required/>
             </div>
             <div class="mb-3 m-4">
                 <label for="Cena" class="form-label">Cena (€)</label>
-                <input type="text" class="form-control" id="Cena" value={cena} onChange={handleCenaChange} required/>
+                <input type="text" class="form-control" id="Cena" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} required/>
             </div>
             <div class="mb-3 m-4">
                 <label for="Popis" class="form-label">Popis</label>
-                <textarea class="form-control" id="Popis" rows="3" value={popis} onChange={handlePopisChange} required></textarea>
+                <textarea class="form-control" id="Popis" rows="3" value={newDesc} onChange={(e) => setNewDesc(e.target.value)} required></textarea>
             </div>
             <div class="mb-3 m-4">
                 <label for="PocetKs" class="form-label">Počet kusov</label>
-                <input type="text" class="form-control" value={pocet_ks} id="PocetKs" onChange={handlePocetKsChange} required/>
+                <input type="text" class="form-control" value={newQuant} id="PocetKs" onChange={(e) => setNewQuant(e.target.value)} required/>
             </div>
             
 

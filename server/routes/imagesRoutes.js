@@ -3,7 +3,7 @@ const imagesController = require('../controllers/imagesController');
 
 const router = express.Router();
 
-router.post('/upload', imagesController.upload.single('image'), imagesController.uploadImage);
+router.post('/upload/:itemId?', imagesController.upload.single('image'), imagesController.uploadImage);
 router.get('/getPath/:id', imagesController.getMainImagePathByItemId);
 router.get('/getAllImagesByItemId/:id', imagesController.getAllImagesByItemId);
 router.delete('/deleteById/:id', imagesController.deleteImageById);

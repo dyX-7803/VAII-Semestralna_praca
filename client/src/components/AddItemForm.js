@@ -1,9 +1,11 @@
 import React, { useState} from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const AddItemForm = () => {
 
+        const navigate = useNavigate();
         const handleTitle = (text) => {
             document.title = text;
         };
@@ -12,6 +14,7 @@ const AddItemForm = () => {
         const [popis, setPopis] = useState('');
         const [cena, setCena] = useState('');
         const [pocet_ks, setPocetKs] = useState('');
+        const [errors, setErrors] = useState({});
 
         const [selectedMainImage, setSelectedMainImage] = useState(null);
         const [selectedOtherImages, setSelectedOtherImages] = useState([]);
@@ -27,7 +30,6 @@ const AddItemForm = () => {
 
         const handleOtherImagesChange = (e) => {
             const newImages = Array.from(e.target.files);
-            //setSelectedOtherImages(e.target.files);
             setSelectedOtherImages((prevImages) => [...prevImages, ...newImages]);
         };
 
@@ -35,7 +37,43 @@ const AddItemForm = () => {
             setSelectedOtherImages((prevFiles) => prevFiles.filter((_, i) => i !== index));
         };
 
+        const validate = () => {
+            const errors = {};
+
+            if (!nazov.trim())
+            {
+                errors.nazov = "Názov nesmie byť prázdny!";
+            }
+            if (!cena || isNaN(Number(cena)))
+            {
+                errors.cena = "Cena musí byť číslo!";
+            } else if (Number(cena) <= 0) 
+            {
+                errors.cena = "Cena musí byť väčšia ako 0!";
+            }
+            if (!pocet_ks || !Number.isInteger(Number(pocet_ks))) {
+                errors.pocetKs = "Počet kusov musí byť celé číslo!";
+            } else if (Number(pocet_ks) < 0) {
+                errors.pocetKs = "Počet kusov musí byť 0 alebo viac!";
+            }
+
+            if (!selectedMainImage)
+            {
+                errors.mainImage = "Hlavný obrázok musí byť zvolený!"
+            }
+
+            return errors;
+        };
+
         const handleSubmit = async () => {
+            const validationErr = validate();
+            if (Object.keys(validationErr).length > 0)
+            {
+                setErrors(validationErr);
+                return;
+            }
+
+            setErrors({});
             const data = {
                 nazov: nazov,
                 popis: popis,
@@ -82,6 +120,8 @@ const AddItemForm = () => {
                 alert('Nepodarilo sa nahrať obrázky.');
               }
 
+
+              navigate('/katalog');
         };
 
 
@@ -91,11 +131,13 @@ const AddItemForm = () => {
         <div>
             <div class="mb-3 m-4">
                 <label for="Nazov" class="form-label">Názov</label>
-                <input type="text" class="form-control" id="Nazov" value={nazov} onChange={handleNazovChange} required/>
+                <input type="text" className={`form-control ${errors.nazov ? 'input-error' : ''}`} id="Nazov" value={nazov} onChange={handleNazovChange} required/>
+                {errors.nazov && <p className='error'>{errors.nazov}</p>}
             </div>
             <div class="mb-3 m-4">
                 <label for="Cena" class="form-label">Cena (€)</label>
-                <input type="text" class="form-control" id="Cena" placeholder="9.99" value={cena} onChange={handleCenaChange} required/>
+                <input type="text" className={`form-control ${errors.cena ? 'input-error' : ''}`} id="Cena" placeholder="9.99" value={cena} onChange={handleCenaChange} required/>
+                {errors.cena && <p className='error'>{errors.cena}</p>}
             </div>
             <div class="mb-3 m-4">
                 <label for="Popis" class="form-label">Popis</label>
@@ -103,12 +145,14 @@ const AddItemForm = () => {
             </div>
             <div class="mb-3 m-4">
                 <label for="PocetKs" class="form-label">Počet kusov</label>
-                <input type="text" class="form-control" id="PocetKs" value={pocet_ks} onChange={handlePocetKsChange} required/>
+                <input type="text" className={`form-control ${errors.pocetKs ? 'input-error' : ''}`} id="PocetKs" value={pocet_ks} onChange={handlePocetKsChange} required/>
+                {errors.pocetKs && <p className='error'>{errors.pocetKs}</p>}
             </div>
             
             <div class="mb-3 m-4">
                 <label for="HlavnyObrazok" class="form-label">Hlavný obrázok</label>
-                <input class="form-control" type="file" id="HlavnyObrazok" onChange={handleImageChange} required/>
+                <input className={`form-control ${errors.mainImage ? 'input-error' : ''}`} type="file" id="HlavnyObrazok" onChange={handleImageChange} required/>
+                {errors.mainImage && <p className='error'>{errors.mainImage}</p>}
             </div>
             
             <div class="mb-3 m-4">
@@ -140,7 +184,7 @@ const AddItemForm = () => {
             </div>
 
             <div class="mb-3 m-4">
-                <Link to='/katalog' className='no-decoration-text' onClick={() => handleTitle('WearWave | Katalóg')}>
+                <Link className='no-decoration-text' onClick={() => handleTitle('WearWave | Katalóg')}>
                     <button class="btn btn-primary" onClick={handleSubmit}>
                         Pridať
                     </button>

@@ -4,7 +4,7 @@ const pool = require('../db');
 
 exports.getAllItems = async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM polozka');
+        const result = await pool.query('SELECT * FROM polozka ORDER BY id ASC');
         res.json(result.rows);
     } catch (error) {
         console.error('Chyba naciatavania poloziek', error);
@@ -74,5 +74,18 @@ exports.deleteItemById = async (req, res) => {
     } catch (error) {
         console.error('Chyba pri odstraňovaní položky:', error);
         res.status(500).json({ message: 'Chyba pri odstraňovaní položky z databázy.' });
+    }
+};
+
+exports.updateItemById = async (req, res) => {
+    const { id } = req.params;
+    const {nazov, popis, cena, pocet_ks} = req.body;
+
+    try {
+        await pool.query('UPDATE polozka SET nazov = $1, popis = $2, cena = $3, pocet_ks = $4 WHERE id = $5', [nazov, popis, cena, pocet_ks, id]);
+        res.json({message: 'Polozka uspesne updatnuta'});
+    } catch (error) {
+        console.error('Chyba pri update položky.', err);
+        res.status(500).json({ error: 'Chyba pri update položky.' });
     }
 };

@@ -16,9 +16,19 @@ exports.upload = multer({ storage: storage });
 
 exports.uploadImage = async (req, res) => {
     try {
-      const lastPolozka = await pool.query('SELECT * FROM polozka ORDER BY id DESC LIMIT 1');
-      if (lastPolozka.rows.length > 0) {
-        const polozkaId = lastPolozka.rows[0].id;
+      const {itemId} = req.params;
+      let polozka;
+      if (itemId)
+      {
+        polozka = await pool.query('SELECT * FROM polozka WHERE id = $1 ORDER BY id DESC LIMIT 1', [itemId]);
+      }
+      else
+      {
+        polozka = await pool.query('SELECT * FROM polozka ORDER BY id DESC LIMIT 1');
+      }
+      
+      if (polozka.rows.length > 0) {
+        const polozkaId = polozka.rows[0].id;
         const filePath = path.join('uploads/images', req.file.filename).replaceAll('\\', '/');
   
         await pool.query('INSERT INTO obrazky (polozka_id, cesta) VALUES ($1, $2)', [polozkaId, filePath]);
