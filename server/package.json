@@ -9,7 +9,7 @@
     "db:init": "node dbSetup.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "LubomirBojda",
   "license": "ISC",
   "description": "",
   "dependencies": {
