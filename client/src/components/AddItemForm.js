@@ -10,19 +10,19 @@ const AddItemForm = () => {
             document.title = text;
         };
     
-        const [nazov, setNazov] = useState('');
-        const [popis, setPopis] = useState('');
-        const [cena, setCena] = useState('');
-        const [pocet_ks, setPocetKs] = useState('');
+        const [name, setName] = useState('');
+        const [desc, setDesc] = useState('');
+        const [price, setPrice] = useState('');
+        const [quant, setQuant] = useState('');
         const [errors, setErrors] = useState({});
 
         const [selectedMainImage, setSelectedMainImage] = useState(null);
         const [selectedOtherImages, setSelectedOtherImages] = useState([]);
 
-        const handleNazovChange = (e) => setNazov(e.target.value);
-        const handlePopisChange = (e) => setPopis(e.target.value);
-        const handleCenaChange = (e) => setCena(e.target.value);
-        const handlePocetKsChange = (e) => setPocetKs(e.target.value);
+        const handleNazovChange = (e) => setName(e.target.value);
+        const handlePopisChange = (e) => setDesc(e.target.value);
+        const handleCenaChange = (e) => setPrice(e.target.value);
+        const handlePocetKsChange = (e) => setQuant(e.target.value);
 
         const handleImageChange = (e) => {
             const validImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -48,22 +48,22 @@ const AddItemForm = () => {
         const validate = () => {
             const errors = {};
 
-            if (!nazov.trim())
+            if (!name.trim())
             {
                 errors.nazov = "Názov nesmie byť prázdny!";
             }
-            if (!cena || isNaN(Number(cena)))
+            if (!price || isNaN(Number(price)))
             {
                 errors.cena = "Cena musí byť číslo!";
-            } else if (Number(cena) <= 0) 
+            } else if (Number(price) <= 0) 
             {
                 errors.cena = "Cena musí byť väčšia ako 0!";
             }
-            if (!pocet_ks || !Number.isInteger(Number(pocet_ks))) {
-                errors.pocetKs = "Počet kusov musí byť celé číslo!";
-            } else if (Number(pocet_ks) < 0) {
-                errors.pocetKs = "Počet kusov musí byť 0 alebo viac!";
-            }
+            // if (!quant || !Number.isInteger(Number(quant))) {
+            //     errors.pocetKs = "Počet kusov musí byť celé číslo!";
+            // } else if (Number(quant) < 0) {
+            //     errors.pocetKs = "Počet kusov musí byť 0 alebo viac!";
+            // }
 
             if (!selectedMainImage)
             {
@@ -82,54 +82,29 @@ const AddItemForm = () => {
             }
 
             setErrors({});
-            const data = {
-                nazov: nazov,
-                popis: popis,
-                cena: cena,
-                pocet_ks: pocet_ks,
-            };
+            const formData = new FormData();
+            formData.append('nazov', name);
+            formData.append('popis', desc);
+            formData.append('cena', price);
+            formData.append('pocet_ks', quant);
+            formData.append('mainImage', selectedMainImage);
+            for (const otherImage of selectedOtherImages)
+            {
+                formData.append('otherImages[]', otherImage);
+            }
 
             try {
-                await axios.post('/api/polozka/add', data);
+                await axios.post('/api/polozka/add', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
             } catch (error) {
                 console.error('Chyba pri pridávaní položky:', error);
-                alert('Niečo sa pokazilo!');
+                alert('Chyba pri pridávaní položky.');
             }
 
-
-            const formData = new FormData();
-            formData.append('image', selectedMainImage);
-
-            try {
-                await axios.post('/api/obrazky/upload', formData, {
-                    headers: { 'Content-Type': 'multipart/form-data'},
-                });
-            } catch (error) {
-                console.error('Chyba pri pridávaní obrázka.', error);
-                alert('Nepodarilo sa nahrať obrázok.');
-            }
-
-
-            try {
-                  const uploadPromises = Array.from(selectedOtherImages).map(async (image) => {
-                  const formData = new FormData();
-                  formData.append('image', image);
-          
-                  await axios.post('/api/obrazky/upload', formData, {
-                    headers: {
-                      'Content-Type': 'multipart/form-data',
-                    },
-                  });
-                });
-          
-                await Promise.all(uploadPromises);
-              } catch (error) {
-                console.error('Chyba pri pridávaní obrázkov.', error);
-                alert('Nepodarilo sa nahrať obrázky.');
-              }
-
-
-              navigate('/katalog');
+            navigate('/katalog');
         };
 
 
@@ -139,21 +114,21 @@ const AddItemForm = () => {
         <div>
             <div class="mb-3 m-4">
                 <label for="Nazov" class="form-label">Názov</label>
-                <input type="text" className={`form-control ${errors.nazov ? 'input-error' : ''}`} id="Nazov" value={nazov} onChange={handleNazovChange} required/>
+                <input type="text" className={`form-control ${errors.nazov ? 'input-error' : ''}`} id="Nazov" value={name} onChange={handleNazovChange} required/>
                 {errors.nazov && <p className='error'>{errors.nazov}</p>}
             </div>
             <div class="mb-3 m-4">
                 <label for="Cena" class="form-label">Cena (€)</label>
-                <input type="text" className={`form-control ${errors.cena ? 'input-error' : ''}`} id="Cena" placeholder="9.99" value={cena} onChange={handleCenaChange} required/>
+                <input type="text" className={`form-control ${errors.cena ? 'input-error' : ''}`} id="Cena" placeholder="9.99" value={price} onChange={handleCenaChange} required/>
                 {errors.cena && <p className='error'>{errors.cena}</p>}
             </div>
             <div class="mb-3 m-4">
                 <label for="Popis" class="form-label">Popis</label>
-                <textarea class="form-control" id="Popis" rows="3" value={popis} onChange={handlePopisChange} required></textarea>
+                <textarea class="form-control" id="Popis" rows="3" value={desc} onChange={handlePopisChange} required></textarea>
             </div>
             <div class="mb-3 m-4">
                 <label for="PocetKs" class="form-label">Počet kusov</label>
-                <input type="text" className={`form-control ${errors.pocetKs ? 'input-error' : ''}`} id="PocetKs" value={pocet_ks} onChange={handlePocetKsChange} required/>
+                <input type="text" className={`form-control ${errors.pocetKs ? 'input-error' : ''}`} id="PocetKs" value={quant} onChange={handlePocetKsChange} required/>
                 {errors.pocetKs && <p className='error'>{errors.pocetKs}</p>}
             </div>
             

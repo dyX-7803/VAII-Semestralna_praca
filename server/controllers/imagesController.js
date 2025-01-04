@@ -115,7 +115,7 @@ exports.uploadImage = async (req, res) => {
       res.json({message: 'Obrazok uspesne updatnuty'});
     } catch (error) {
       console.error('Chyba pri updatovaní hlavného obrázku.', error);
-      res.status(500).json({ message: 'Chyba pri updovaní hlavného obrázku v databáze.' });
+      res.status(500).json({ message: 'Chyba pri updatovaní hlavného obrázku v databáze.' });
     }
   };
 

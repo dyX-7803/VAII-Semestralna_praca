@@ -124,61 +124,36 @@ const EditItemForm = () => {
         }
 
         setErrors({});
-        const updatedItem = {
-            nazov: newName,
-            popis: newDesc,
-            cena: newPrice,
-            pocet_ks: newQuant,
-        };
+        const formData = new FormData();
+        formData.append('nazov', newName);
+        formData.append('popis', newDesc);
+        formData.append('cena', newPrice);
+        formData.append('pocet_ks', newQuant);
 
-        try {
-            await axios.put(`/api/polozka/updateItemById/${id}`, updatedItem);
-        } catch (error) {
-            console.error('Chyba pri update položky.', error);
-            alert('Chyba pri update položky.');
+        for (const imageId of selectedIds) 
+        {
+            formData.append('deleteImagesIds[]', imageId);
         }
-
 
         if (isMainImageChanged)
         {
-                try {
-                    const formData = new FormData();
-                    formData.append('image', newMainImage);
-                    await axios.put(`/api/obrazky/updateMainImageByItemId/${id}`, formData, {
-                        headers: { 'Content-Type': 'multipart/form-data'},
-                    });
-                } catch (error) {
-                    console.error('Chyba pri updatovaní hlavného obrázka.', error);
-                    alert('Nepodarilo sa updatnúť hlavný obrázok.');
-                }
+            formData.append('mainImage', newMainImage);
         }
 
-
-        try {
-            for (const imageId of selectedIds) {
-                await axios.delete(`/api/obrazky/deleteById/${imageId}`);
-            }
-        } catch (error) {
-            console.error('Chyba pri odstraňovaní obrázkov', error);
-            alert('Niečo sa pokazilo pri odstaňovaní obrázkov!');
+        for (const image of newOtherImages)
+        {
+            formData.append('otherImages[]', image);
         }
 
         try {
-            const uploadPromises = Array.from(newOtherImages).map(async (image) => {
-            const formData = new FormData();
-            formData.append('image', image);
-    
-            await axios.post(`/api/obrazky/upload/${id}`, formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
+            await axios.put(`/api/polozka/updateItemById/${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
-          });
-    
-          await Promise.all(uploadPromises);
         } catch (error) {
-          console.error('Chyba pri pridávaní obrázkov.', error);
-          alert('Nepodarilo sa nahrať obrázky.');
+            console.error('Chyba pri aktualizácii položky:', error);
+            alert('Chyba pri aktualizácii položky.');
         }
 
         navigate('/katalog');
