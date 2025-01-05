@@ -5,9 +5,11 @@ import {FaTrash} from 'react-icons/fa';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { Link} from 'react-router-dom';
+import UserAuth from "../hooks/UserAuth";
 
 const Item = ({id, nazov, popis, cena, pocet_ks}) => {
 
+    const {user, isAuthenticated} = UserAuth();
     const baseUrl = 'http://localhost:5000/';
     const [path, setPath] = useState('');
 
@@ -52,13 +54,13 @@ const Item = ({id, nazov, popis, cena, pocet_ks}) => {
                         <div class="d-flex align-items-center gap-2">
                             <a href="/#" class="btn btn-dark">Pridať do košíka</a>
 
-
-                            <div className="d-flex gap-1">
-                            <Link to={`/katalog/editovat/${id}`} className='no-decoration-text' >
+                            {isAuthenticated && user.role === 'admin' ? (
+                                <div className="d-flex gap-1">
+                                <Link to={`/katalog/editovat/${id}`} className='no-decoration-text' >
                                 <button class="btn btn-primary ">
                                         <BiPencil size={18}></BiPencil>
                                 </button>
-                            </Link>
+                                </Link>
                                 
                                 <button type="button" class="btn btn-danger " data-toggle="modal" data-targer="#exampleModal" onClick={handleShow}>
                                         <FaTrash size={18}></FaTrash>
@@ -78,10 +80,9 @@ const Item = ({id, nazov, popis, cena, pocet_ks}) => {
                                     </Button>
                                     </Modal.Footer>
                                 </Modal>
-
-
-
-                        </div>
+                                </div>
+                            ) : (<div/>)}
+                            
                     </div>     
                 </div>
             </div>

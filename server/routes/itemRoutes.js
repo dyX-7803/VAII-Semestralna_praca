@@ -6,7 +6,6 @@ const { upload } = require('../controllers/imagesController');
 const router = express.Router();
 
 router.get('/', itemController.getAllItems);
-router.get('/last', itemController.getLastItem);
 router.get('/getDetailsById/:id', itemController.getItemDetailsById);
 router.delete('/deleteItemById/:id', itemController.deleteItemById);
 

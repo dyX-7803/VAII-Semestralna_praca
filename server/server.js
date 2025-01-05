@@ -1,6 +1,7 @@
 const express = require('express')
 const itemRouter = require('./routes/itemRoutes');
 const imagesRoutes = require('./routes/imagesRoutes');
+const usersRoutes = require('./routes/usersRoutes');
 const path = require('path');
 const cors = require('cors');
 
@@ -15,5 +16,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/polozka', itemRouter);
 app.use('/api/obrazky', imagesRoutes);
+app.use('/api/pouzivatelia', usersRoutes);
 
 app.listen(5000, () => {console.log("Server started on port 5000")});

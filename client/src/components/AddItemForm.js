@@ -59,11 +59,11 @@ const AddItemForm = () => {
             {
                 errors.cena = "Cena musí byť väčšia ako 0!";
             }
-            // if (!quant || !Number.isInteger(Number(quant))) {
-            //     errors.pocetKs = "Počet kusov musí byť celé číslo!";
-            // } else if (Number(quant) < 0) {
-            //     errors.pocetKs = "Počet kusov musí byť 0 alebo viac!";
-            // }
+            if (!quant || !Number.isInteger(Number(quant))) {
+                errors.pocetKs = "Počet kusov musí byť celé číslo!";
+            } else if (Number(quant) < 0) {
+                errors.pocetKs = "Počet kusov musí byť 0 alebo viac!";
+            }
 
             if (!selectedMainImage)
             {
@@ -106,8 +106,6 @@ const AddItemForm = () => {
 
             navigate('/katalog');
         };
-
-
 
 
      return (

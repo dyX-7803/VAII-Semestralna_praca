@@ -7,6 +7,9 @@ import Home from './components/Home';
 import Catalogue from './components/Catalogue';
 import AddItemForm from './components/AddItemForm';
 import EditItemForm from './components/EditItemForm';
+import RegisterForm from './components/RegisterForm';
+import LoginForm from './components/LoginForm';
+import ProtectedRoute from './hooks/ProtectedRoute';
 
 function App() {
 
@@ -21,7 +24,9 @@ function App() {
               <Route path='/katalog' element={<Catalogue/>}/>
               <Route path='/faqs' element={<Faqs/>}/>
               <Route path='/katalog/pridat' element={<AddItemForm/>}/>
-              <Route path='/katalog/editovat/:id' element={<EditItemForm/>}/>
+              <Route path='/katalog/editovat/:id' element={<ProtectedRoute element={EditItemForm}/>}/>
+              <Route path='/registrovat' element={<RegisterForm/>}/>
+              <Route path='/prihlasit' element={<LoginForm/>}/>
             </Routes>
           <Footer/>
       </Router>

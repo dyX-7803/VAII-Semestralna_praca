@@ -13,19 +13,6 @@ exports.getAllItems = async (req, res) => {
     }
 };
 
-exports.getLastItem = async (req, res) => {
-    try {
-        const result = await pool.query('SELECT * FROM polozka ORDER BY id DESC LIMIT 1');
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'Nenašla sa žiadna položka.' });
-        }
-        res.json(result.rows[0]);
-    } catch (error) {
-        console.error('Chyba pri získavaní poslednej položky:', error);
-        res.status(500).json({ message: 'Chyba pri získavaní položky.' });
-    }
-};
-
 exports.getItemDetailsById = async (req, res) => {
     try {
         const { id } = req.params;

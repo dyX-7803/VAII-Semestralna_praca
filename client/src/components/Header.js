@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
-
+import UserAuth from '../hooks/UserAuth';
 
 const Header = () => {
+
+    const {user, isAuthenticated} = UserAuth();
 
     const [activeItem, setActiveItem] = useState(() => {
         return localStorage.getItem('activeItem') || 'domov';
@@ -17,7 +19,10 @@ const Header = () => {
         document.title = text;
     };
 
-
+    const logout = () => {
+        localStorage.removeItem('authToken');
+        window.location.reload();
+    }; 
 
     return (
         <header class="p-3 bg-dark text-white top-header">
@@ -58,10 +63,24 @@ const Header = () => {
                     </button>
                 </form>
 
-                <div class="text-end">
-                    <button type="button" class="btn btn-outline-light me-2">Prihlásenie</button>
-                    <button type="button" class="btn btn-warning">Registrácia</button>
-                </div>
+                {isAuthenticated ? (
+                    <div class="text-end">
+                        <Link to='/' className='no-decoration-text' onClick={() => handleTitle('WearWave | Domov')}>
+                            <button type="button" class="btn btn-danger" onClick={() => {handleNavClick('domov'); logout()}}>Odhlásiť sa</button>
+                        </Link>
+                    </div>
+                ) : (
+                    <div class="text-end">
+                        <Link to='/prihlasit' className='no-decoration-text' onClick={() => handleTitle('WearWave | Prihlásenie')}>
+                            <button type="button" class="btn btn-outline-light me-2" onClick={() => handleNavClick('prihlasenie')}>Prihlásenie</button>
+                        </Link>
+                        <Link to='/registrovat' className='no-decoration-text' onClick={() => handleTitle('WearWave | Registrácia')}>
+                            <button type="button" class="btn btn-warning" onClick={() => handleNavClick('registracia')}>Registrácia</button>
+                            
+                        </Link>
+                    </div>
+                )}
+                
             </div>
             </div>
         </header>

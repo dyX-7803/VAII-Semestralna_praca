@@ -2,11 +2,11 @@ import React, {useState, useEffect} from 'react'
 import Item from './Item';
 import axios from 'axios';
 import { Link} from 'react-router-dom';
-
-
+import UserAuth from '../hooks/UserAuth';
 
 const Catalogue = () => {
 
+    const {user, isAuthenticated} = UserAuth();
     const handleTitle = (text) => {
         document.title = text;
     };
@@ -28,17 +28,19 @@ const Catalogue = () => {
     }, []);
 
     if (error) return <p>{error}</p>
-    //if (!items.length) return <p>Loading...</p>
 
     return (
-        <div class="container">
-                
-                <div class="pt-3 text-center">
+        
+        <div class="container">       
+                {isAuthenticated && user.role === 'admin' ? (
+                    <div class="pt-3 text-center">
                     <Link to='/katalog/pridat' className='no-decoration-text' onClick={() => handleTitle('WearWave | Pridať položku')}>
                         <button class="btn btn-primary"> Pridať položku
                         </button>
                     </Link>
-                </div>
+                    </div>
+                ) : (<div/>)}
+                
                 
         <div class="row">
             <div class="col h-100 col-lg-2 g-4">
