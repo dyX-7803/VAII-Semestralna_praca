@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import UserAuth from '../hooks/UserAuth';
+import { BsPersonGear, BsCartFill } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
 
+    const navigate = useNavigate();
     const {user, isAuthenticated} = UserAuth();
 
     const [activeItem, setActiveItem] = useState(() => {
@@ -21,6 +24,9 @@ const Header = () => {
 
     const logout = () => {
         localStorage.removeItem('authToken');
+        navigate('/');
+        handleNavClick('domov');
+        handleTitle('WearWave | Domov')
         window.location.reload();
     }; 
 
@@ -64,11 +70,28 @@ const Header = () => {
                 </form>
 
                 {isAuthenticated ? (
-                    <div class="text-end">
-                        <Link to='/' className='no-decoration-text' onClick={() => handleTitle('WearWave | Domov')}>
-                            <button type="button" class="btn btn-danger" onClick={() => {handleNavClick('domov'); logout()}}>Odhlásiť sa</button>
-                        </Link>
+                    <div className="text-end">
+                    <div className="d-flex align-items-center justify-content-end gap-2">
+                      <div className="dropdown">
+                        <button className="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                          <BsPersonGear size={24} color="black" />
+                        </button>
+                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a className="dropdown-item" href="#">Účet</a></li>
+                            <li><a className="dropdown-item" style={{color: 'red', cursor: 'pointer'}} 
+                            onClick={() => logout()}>Odhlásiť sa</a></li>
+                        </ul>
+                      </div>
+                      <Link to="/shoppingcart" className="no-decoration-text" onClick={() => handleTitle('WearWave | Košík')}>
+                        <button type="button" className="btn btn-success" onClick={() => handleNavClick('shoppingcart')}>
+                          <BsCartFill size={24} color="white" />
+                        </button>
+                      </Link>
                     </div>
+                  </div>
+                  
+                  
+                    
                 ) : (
                     <div class="text-end">
                         <Link to='/prihlasit' className='no-decoration-text' onClick={() => handleTitle('WearWave | Prihlásenie')}>

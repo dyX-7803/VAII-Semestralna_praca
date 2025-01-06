@@ -1,7 +1,25 @@
-import React from 'react'
+import React from 'react';
+import {useState, useEffect} from 'react';
+import axios from "axios";
+import { Link} from 'react-router-dom';
 
 
 const Home = () => {
+
+    const [news, setNews] = useState([]);
+    const baseUrl = 'http://localhost:5000/';
+
+    useEffect(() => {
+            const fetchItems = async () => {
+                try {
+                    const response = await axios.get('/api/polozka/getNews');
+                    setNews(response.data);
+                } catch (err) {
+                    console.error(err);
+                }
+            };
+            fetchItems(); 
+    }, []);
 
     return (
         <div>
@@ -60,42 +78,28 @@ const Home = () => {
             </h1>
             <div class="col-lg-8 offset-lg-2">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
-                    <div class="col">
-                        <div class="card card-scale w-75 mx-auto">
-                            <a href="/#">
-                                <img src="images/catalog/picture4.jpg" class="card-img-top" alt="..."/>
+
+                    {console.log(news.length)}
+
+                    {news.map(item => (
+                        <div class="col">
+                        <div class="card card-scale h-100 w-75 mx-auto">
+                        <Link to={`/katalog/detail/${item.id}`} className='no-decoration-text h-100' >
+                            <a>
+                                <img loading="lazy" src={`${baseUrl}${item.cesta}`} class="card-img-top h-100" alt={item.nazov + item.id}/>
                             </a>
+                            
+                        </Link>
 
                             <div class="card-body">
-                                <h5 class="card-title">Bežecké lall tenisky</h5>
-                                <p class="card-text">39,99€</p>
+                                <h5 class="card-title">{item.nazov}</h5>
+                                <p class="card-text">{item.cena}€</p>
+                                <a href="/#" class="btn btn-dark">Pridať do košíka</a>
                             </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="card card-scale w-75 mx-auto">
-                            <a href="/#">
-                                <img src="images/catalog/picture1.jpg" class="card-img-top" alt="..."/>
-                            </a>
+                        </div>
+                    ))}
 
-                            <div class="card-body">
-                                <h5 class="card-title">Kožená bunda</h5>
-                                <p class="card-text">24,99€</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card card-scale w-75 mx-auto">
-                            <a href="/#">
-                                <img src="images/catalog/picture3.jpg" class="card-img-top" alt="..."/>
-                            </a>
-
-                            <div class="card-body">
-                                <h5 class="card-title">Nohavice</h5>
-                                <p class="card-text">29,99€</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 

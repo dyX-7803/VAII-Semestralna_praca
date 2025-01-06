@@ -76,12 +76,12 @@ const RegisterForm = () => {
                 <div class="rounded d-flex justify-content-center">
                     <div class="col-lg-6 col-md-8 col-sm-12 shadow-lg p-5 bg-light">
                         <div class="text-center">
-                            <h3 class="text-primary">Registrovať sa</h3>
+                            <h3 class="text-dark">Registrovať sa</h3>
                         </div>
                         <div class="p-4">
                             <form action="">                               
                                 <div className={`input-group ${errors.email ? '' : 'mb-3'}`}>
-                                    <span class="input-group-text bg-primary">
+                                    <span class="input-group-text bg-dark">
                                         <BsPersonFill size={16} color='white'/>
                                     </span>
                                     <input type="email" className={`form-control ${errors.email ? 'input-error' : ''}`} 
@@ -92,7 +92,7 @@ const RegisterForm = () => {
                                 </div>
                                 
                                 <div className={`input-group ${errors.password ? '' : 'mb-3'}`}>
-                                    <span class="input-group-text bg-primary">
+                                    <span class="input-group-text bg-dark">
                                         <BsKeyFill size={16} color='white'/>
                                     </span>
                                     <input type="password" className={`form-control ${errors.password ? 'input-error' : ''}`}
@@ -104,7 +104,7 @@ const RegisterForm = () => {
 
 
                                 <div className={`input-group ${errors.verifyPassword ? '' : 'mb-3'}`}>
-                                    <span class="input-group-text bg-primary">
+                                    <span class="input-group-text bg-dark">
                                         <BsKeyFill size={16} color='white'/>
                                     </span>
                                     <input type="password" className={`form-control ${errors.verifyPassword ? 'input-error' : ''}`}
@@ -116,7 +116,7 @@ const RegisterForm = () => {
                                 </div>
 
                                 <div class="d-grid col-12 mx-auto">
-                                    <button class="btn btn-primary" type="button" onClick={handleSubmit}><span></span>Registrovať</button>
+                                    <button class="btn btn-dark" type="button" onClick={handleSubmit}><span></span>Registrovať</button>
                                 </div>
                                 <p class="text-center mt-3">Už máte účet?
                                 <Link to='/prihlasit' className='no-decoration-text' onClick={() => handleTitle('WearWave | Prihlásenie')}>

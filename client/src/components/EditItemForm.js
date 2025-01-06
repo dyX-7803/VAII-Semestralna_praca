@@ -71,8 +71,7 @@ const EditItemForm = () => {
                 console.error(err);
             }
 
-            try {
-                
+            try {               
                 const response = await axios.get(`/api/obrazky/getAllImagesByItemId/${id}`);
                 setMainImage(response.data[0]);
                 response.data.shift();

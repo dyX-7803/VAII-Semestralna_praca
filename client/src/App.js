@@ -10,6 +10,8 @@ import EditItemForm from './components/EditItemForm';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
 import ProtectedRoute from './hooks/ProtectedRoute';
+import ItemDetail from './components/ItemDetail';
+import ShoppingCart from './components/ShoppingCart';
 
 function App() {
 
@@ -23,10 +25,12 @@ function App() {
               <Route path='/' element={<Home/>}/>
               <Route path='/katalog' element={<Catalogue/>}/>
               <Route path='/faqs' element={<Faqs/>}/>
-              <Route path='/katalog/pridat' element={<AddItemForm/>}/>
+              <Route path='/katalog/pridat' element={<ProtectedRoute element={AddItemForm}/>}/>
               <Route path='/katalog/editovat/:id' element={<ProtectedRoute element={EditItemForm}/>}/>
-              <Route path='/registrovat' element={<RegisterForm/>}/>
-              <Route path='/prihlasit' element={<LoginForm/>}/>
+              <Route path='/registrovat' element={<ProtectedRoute element={RegisterForm}/>}/>
+              <Route path='/prihlasit' element={<ProtectedRoute element={LoginForm}/>}/>
+              <Route path='/katalog/detail/:id' element={<ItemDetail/>}/>
+              <Route path='/shoppingcart' element={<ProtectedRoute element={ShoppingCart}/>}/>
             </Routes>
           <Footer/>
       </Router>

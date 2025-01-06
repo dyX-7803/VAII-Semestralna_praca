@@ -8,6 +8,7 @@ const router = express.Router();
 router.get('/', itemController.getAllItems);
 router.get('/getDetailsById/:id', itemController.getItemDetailsById);
 router.delete('/deleteItemById/:id', itemController.deleteItemById);
+router.get('/getNews', itemController.getNews);
 
 router.post('/add', upload.fields([
     { name: 'mainImage', maxCount: 1 },

@@ -39,24 +39,24 @@ const LoginForm = () => {
                     <div class="rounded d-flex justify-content-center">
                         <div class="col-lg-6 col-md-8 col-sm-12 shadow-lg p-5 bg-light">
                             <div class="text-center">
-                                <h3 class="text-primary">Prihlásiť sa</h3>
+                                <h3 class="text-dark">Prihlásiť sa</h3>
                             </div>
                             <div class="p-4">
                                 <form action="">                               
                                     <div class="input-group mb-3">
-                                        <span class="input-group-text bg-primary">
+                                        <span class="input-group-text bg-dark">
                                             <BsPersonFill size={16} color='white'/>
                                         </span>
                                         <input type="email" class="form-control" placeholder="Email" value={email} onChange={handleEmailChange}/>
                                     </div>
                                     <div class="input-group mb-3">
-                                        <span class="input-group-text bg-primary">
+                                        <span class="input-group-text bg-dark">
                                             <BsKeyFill size={16} color='white'/>
                                         </span>
                                         <input type="password" class="form-control" placeholder="Heslo" value={password} onChange={handlePasswordChange}/>
                                     </div>
                                     <div class="d-grid col-12 mx-auto">
-                                        <button class="btn btn-primary" type="button" onClick={() => login(email, password)}><span></span>Prihlásiť</button>
+                                        <button class="btn btn-dark" type="button" onClick={() => login(email, password)}><span></span>Prihlásiť</button>
                                     </div>
                                     <p class="text-center mt-3">Ešte nemáte účet? 
                                         <Link to='/registrovat' className='no-decoration-text' onClick={() => handleTitle('WearWave | Registrácia')}>

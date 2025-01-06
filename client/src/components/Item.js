@@ -43,10 +43,13 @@ const Item = ({id, nazov, popis, cena, pocet_ks}) => {
     return (
         <div class="col mb-4">
             <div class="card card-scale h-100">
-                    <a class="h-100" href="/#">
 
+                <Link to={`/katalog/detail/${id}`} className='no-decoration-text h-100' >
+                    <a class="h-100">
                     <img loading="lazy" src={`${baseUrl}${path}`} class="card-img-top h-100 img-fluid" alt={nazov + id}/>
                     </a>
+                </Link>
+                    
                 <div class="card-body">
                     <h5 class="card-title">{nazov}</h5>
                     <p class="card-text">{cena}€</p>
