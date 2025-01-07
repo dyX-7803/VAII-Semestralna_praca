@@ -50,19 +50,19 @@ const AddItemForm = () => {
 
             if (!name.trim())
             {
-                errors.nazov = "Názov nesmie byť prázdny!";
+                errors.name = "Názov nesmie byť prázdny!";
             }
             if (!price || isNaN(Number(price)))
             {
-                errors.cena = "Cena musí byť číslo!";
+                errors.price = "Cena musí byť číslo!";
             } else if (Number(price) <= 0) 
             {
-                errors.cena = "Cena musí byť väčšia ako 0!";
+                errors.price = "Cena musí byť väčšia ako 0!";
             }
             if (!quant || !Number.isInteger(Number(quant))) {
-                errors.pocetKs = "Počet kusov musí byť celé číslo!";
+                errors.quant = "Počet kusov musí byť celé číslo!";
             } else if (Number(quant) < 0) {
-                errors.pocetKs = "Počet kusov musí byť 0 alebo viac!";
+                errors.quant = "Počet kusov musí byť 0 alebo viac!";
             }
 
             if (!selectedMainImage)
@@ -112,13 +112,13 @@ const AddItemForm = () => {
         <div>
             <div class="mb-3 m-4">
                 <label for="Nazov" class="form-label">Názov</label>
-                <input type="text" className={`form-control ${errors.nazov ? 'input-error' : ''}`} id="Nazov" value={name} onChange={handleNazovChange} required/>
-                {errors.nazov && <p className='error'>{errors.nazov}</p>}
+                <input type="text" className={`form-control ${errors.name ? 'input-error' : ''}`} id="Nazov" value={name} onChange={handleNazovChange} required/>
+                {errors.name && <p className='error'>{errors.name}</p>}
             </div>
             <div class="mb-3 m-4">
                 <label for="Cena" class="form-label">Cena (€)</label>
-                <input type="text" className={`form-control ${errors.cena ? 'input-error' : ''}`} id="Cena" placeholder="9.99" value={price} onChange={handleCenaChange} required/>
-                {errors.cena && <p className='error'>{errors.cena}</p>}
+                <input type="text" className={`form-control ${errors.price ? 'input-error' : ''}`} id="Cena" placeholder="9.99" value={price} onChange={handleCenaChange} required/>
+                {errors.price && <p className='error'>{errors.price}</p>}
             </div>
             <div class="mb-3 m-4">
                 <label for="Popis" class="form-label">Popis</label>
@@ -126,8 +126,8 @@ const AddItemForm = () => {
             </div>
             <div class="mb-3 m-4">
                 <label for="PocetKs" class="form-label">Počet kusov</label>
-                <input type="text" className={`form-control ${errors.pocetKs ? 'input-error' : ''}`} id="PocetKs" value={quant} onChange={handlePocetKsChange} required/>
-                {errors.pocetKs && <p className='error'>{errors.pocetKs}</p>}
+                <input type="text" className={`form-control ${errors.quant ? 'input-error' : ''}`} id="PocetKs" value={quant} onChange={handlePocetKsChange} required/>
+                {errors.quant && <p className='error'>{errors.quant}</p>}
             </div>
             
             <div class="mb-3 m-4">

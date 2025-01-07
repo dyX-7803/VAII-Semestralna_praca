@@ -79,7 +79,6 @@ const Home = () => {
             <div class="col-lg-8 offset-lg-2">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
 
-                    {console.log(news.length)}
 
                     {news.map(item => (
                         <div class="col">
@@ -94,7 +93,6 @@ const Home = () => {
                             <div class="card-body">
                                 <h5 class="card-title">{item.nazov}</h5>
                                 <p class="card-text">{item.cena}€</p>
-                                <a href="/#" class="btn btn-dark">Pridať do košíka</a>
                             </div>
                         </div>
                         </div>

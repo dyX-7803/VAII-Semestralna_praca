@@ -9,7 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 
-const ItemDetail = ({nazov, popis, cena, pocet_ks}) => {
+const ItemDetail = () => {
 
     const navigate = useNavigate();
     const { id } = useParams();
@@ -22,7 +22,7 @@ const ItemDetail = ({nazov, popis, cena, pocet_ks}) => {
     const [name, setName] = useState('');
     const [desc, setDesc] = useState('');
     const [price, setPrice] = useState('');
-    const [quant, setQuant] = useState('');
+    const [quant, setQuant] = useState(1);
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -37,7 +37,6 @@ const ItemDetail = ({nazov, popis, cena, pocet_ks}) => {
                 setName(nazov);
                 setDesc(popis);
                 setPrice(cena);
-                setQuant(pocet_ks);
             } catch (err) {
                 console.error(err);
             }
@@ -67,8 +66,29 @@ const ItemDetail = ({nazov, popis, cena, pocet_ks}) => {
     const changeShowcaseImage = (newImage) =>
     {
         setShowcaseImage(newImage);
-    }
+    };
 
+    const addItemToCart = async () => {
+        try {
+            const response = await axios.post('/api/kosik/addItem', {
+                pouzivatel_id: user.id,
+                polozka_id: id,
+                pocet_ks: quant,
+            });
+    
+            if (response.status === 201) {
+                console.log("Položka bola pridaná do košíka:", response.data);
+                alert("Položka bola pridaná do košíka.");
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 409) {
+                alert("Položka už existuje v košíku.");
+            } else {
+                console.error("Chyba pri pridávaní položky do košíka:", error);
+                alert("Nastala chyba pri pridávaní položky do košíka.");
+            }
+        }
+    };
 
     return (
         <div>
@@ -99,10 +119,13 @@ const ItemDetail = ({nazov, popis, cena, pocet_ks}) => {
                           
                         <div class="mb-4">
                             <label for="quantity" className='form-label fw-bold'>Množstvo:</label>
-                            <input type="number" class="form-control" id="quantity" value="1" min="1" style={{width: '80px'}}/>
+                            <input type="number" class="form-control" id="quantity" value={quant} style={{width: '80px'}} onChange={(e) => {
+                                const newQuant = Math.max(1, e.target.value);
+                                setQuant(newQuant);
+                            }}/>
                         </div>
                         <div>
-                            <button class="btn btn-dark btn-lg mb-3 me-2">
+                            <button class="btn btn-dark btn-lg mb-3 me-2" onClick={() => addItemToCart()}>
                                     <i class="bi bi-cart-plus"></i> Pridať do košíka
                             </button>
 

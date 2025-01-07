@@ -15,7 +15,8 @@ exports.getAllItems = async (req, res) => {
 
 exports.getNews = async (req, res) => {
     try {
-        const result = await pool.query('SELECT p.id, p.nazov, p.cena, o.cesta FROM polozka p JOIN obrazky o ON p.id = o.polozka_id ORDER BY p.id DESC LIMIT 3;');
+        const result = await pool.query(`SELECT DISTINCT ON (p.id) p.id, p.nazov, p.cena, o.cesta FROM polozka p JOIN obrazky o ON p.id = o.polozka_id 
+            ORDER BY p.id DESC LIMIT 3;`);
         res.json(result.rows);
     } catch (error) {
         console.error('Chyba naciatavania noviniek.', error);

@@ -76,10 +76,10 @@ const Catalogue = () => {
                     <Item
                         key={item.id}
                         id={item.id}
-                        nazov={item.nazov}
-                        popis={item.popis}
-                        cena={item.cena}
-                        pocet_ks={item.pocet_ks}
+                        name={item.nazov}
+                        desc={item.popis}
+                        price={item.cena}
+                        quant={item.pocet_ks}
                     />
                 ))}
 

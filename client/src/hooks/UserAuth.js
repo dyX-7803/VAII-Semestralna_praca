@@ -18,6 +18,7 @@ const UserAuth = () => {
                 setIsAuthenticated(false);
             }
         }
+        
     }, []);
 
     return { user, isAuthenticated };
