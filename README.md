@@ -5,14 +5,12 @@ Tabuľky do databázy načítať pomocou príkazu:
 
 node dbSetup.js
 
-Pre inštalciu v koreňovom priečinku spustiť príkaz:
+Potom v priečinku server spustiť server príkazmi:
 
-npm start
-
-Potom v priečinku server spustiť server príkazom:
-
+npm install
 node server.js
 
 Následne spustiť klienta v priečinku client pomocou:
 
+npm install
 npm start
