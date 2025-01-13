@@ -36,7 +36,10 @@ const Home = () => {
                     <div class="carousel-caption text-start">
                         <h1 class="carousel-text">Mužská móda.</h1>
                         <p class="carousel-text">Elegantné kúsky pre každý štýl. Objavujte trendy pánske oblečenie.</p>
-                        <p><a class="btn btn-lg btn-primary carousel-button" href="/#">Prezerať</a></p>
+                        <Link to={`/katalog`} className='no-decoration-text h-100' >
+                        <p><a class="btn btn-lg btn-primary carousel-button">Prezerať</a></p>                       
+                        </Link>
+                        
                     </div>
                 </div>
             </div>
@@ -47,7 +50,10 @@ const Home = () => {
                     <div class="carousel-caption">
                         <h1 class="carousel-text">Ženská móda</h1>
                         <p class="carousel-text">Štýlové oblečenie pre moderné ženy. Zvýraznite svoju jedinečnosť.</p>
-                        <p><a class="btn btn-lg btn-primary carousel-button" href="/#">Katalóg</a></p>
+                        <Link to={`/katalog`} className='no-decoration-text h-100' >
+                        <p><a class="btn btn-lg btn-primary carousel-button">Katalóg</a></p>                         
+                        </Link>
+                        
                     </div>
                 </div>
             </div>
@@ -58,7 +64,10 @@ const Home = () => {
                     <div class="carousel-caption text-end">
                         <h1 class="carousel-text">Detská móda</h1>
                         <p class="carousel-text">Pohodlie a štýl pre najmenších. Oblečenie pre každý detský krok.</p>
-                        <p><a class="btn btn-lg btn-primary carousel-button" href="/#">Prezerať</a></p>
+                        <Link to={`/katalog`} className='no-decoration-text h-100' >
+                            <p><a class="btn btn-lg btn-primary carousel-button">Prezerať</a></p>                           
+                        </Link>
+                        
                     </div>
                 </div>
             </div>

@@ -8,6 +8,7 @@ import { Link} from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import getAuthHeader from "../hooks/AuthHeader";
 
 const ItemDetail = () => {
 
@@ -15,6 +16,7 @@ const ItemDetail = () => {
     const { id } = useParams();
     const {user, isAuthenticated} = UserAuth();
     const baseUrl = 'http://localhost:5000/';
+    const authHeader = getAuthHeader();
 
     const [mainImage, setMainImage] = useState('');
     const [otherImages, setOtherImages] = useState([]);
@@ -56,7 +58,7 @@ const ItemDetail = () => {
 
     const handleDeleteItem = async () => {
         try {
-            await axios.delete(`/api/polozka/deleteItemById/${id}`);
+            await axios.delete(`/api/polozka/deleteItemById/${id}`, authHeader);
         } catch (error) {
             console.error('Chyba pri odstraňovaní', error);
             alert('Niečo sa pokazilo pri odstaňovaní!');
@@ -74,7 +76,7 @@ const ItemDetail = () => {
                 pouzivatel_id: user.id,
                 polozka_id: id,
                 pocet_ks: quant,
-            });
+            }, authHeader);
     
             if (response.status === 201) {
                 console.log("Položka bola pridaná do košíka:", response.data);

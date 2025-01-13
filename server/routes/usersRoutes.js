@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/register', usersController.register);
 router.post('/login', usersController.login);
 router.get('/getEmail/:id', usersController.getEmail);
-router.put('/changePassword', usersController.changePassword);
-router.delete('/deleteUser/:id', usersController.deleteUser);
+router.put('/changePassword', validations.userAuthentification, usersController.changePassword);
+router.delete('/deleteUser/:id', validations.userAuthentification, usersController.deleteUser);
 
 module.exports = router;

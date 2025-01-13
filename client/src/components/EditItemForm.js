@@ -2,12 +2,14 @@ import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import getAuthHeader from '../hooks/AuthHeader';
 
 
 const EditItemForm = () => {
 
     const { id } = useParams();
     const navigate = useNavigate();
+    const authHeader = getAuthHeader();
     const baseUrl = 'http://localhost:5000/';
     const [newName, setNewName] = useState('');
     const [newDesc, setNewDesc] = useState('');
@@ -148,6 +150,7 @@ const EditItemForm = () => {
             await axios.put(`/api/polozka/updateItemById/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    ...authHeader.headers
                 },
             });
         } catch (error) {

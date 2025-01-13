@@ -1,6 +1,7 @@
 const validators = require('../utils/validators');
 const path = require('path');
 const fs = require('fs');
+const jwt = require('jsonwebtoken');
 
 const itemValidation = (req, res, next) => {
 
@@ -41,6 +42,34 @@ const itemValidation = (req, res, next) => {
     next();
 };
 
+// const quantityValidation = (req, res, next) => {
+
+//     const {nazov, popis, cena, pocet_ks} = req.body;
+
+//     if (!validators.validateRequired(nazov) || !validators.validateRequired(cena) || !validators.validateRequired(pocet_ks)) {
+//         deleteImages(mainImage, otherImages);
+//         return res.status(400).json({ error: 'Názov, popis, cena a pocet kusov sú povinné!' });
+//     }
+
+//     if (!validators.validateIsNumberAndPositive(cena)) {
+//         deleteImages(mainImage, otherImages);
+//         return res.status(400).json({ error: 'Cena musí byť nezáporné číslo!' });
+//     }
+
+//     if (!validators.validateIsIntegerAndPositive(pocet_ks)) {
+//         deleteImages(mainImage, otherImages);
+//         return res.status(400).json({ error: 'Počet kusov musí byť celé nezáporné číslo!' });
+//     }
+
+//     if (mainImage && !validators.validateImage(mainImage))
+//     {
+//         deleteImages(mainImage, otherImages);
+//         return res.status(400).json({ error: 'Nahraný súbor nie je platný obrázok (musí byť JPG alebo PNG).' });
+//     }
+
+//     next();
+// };
+
 const deleteImages = (mainImage, otherImages) => {
     if (mainImage)
     {
@@ -59,12 +88,15 @@ const userAuthentification = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
+
         return res.status(401).json({ message: 'Prístup zamietnutý!' });
     }
 
+    console.log(token);
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, 'myKey');
         req.user = decoded;
+        
         next();
     } catch (error) {
         res.status(403).json({ message: 'Neplatný token.' });

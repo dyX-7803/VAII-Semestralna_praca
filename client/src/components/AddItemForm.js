@@ -2,10 +2,12 @@ import React, { useState} from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import getAuthHeader from '../hooks/AuthHeader';
 
 const AddItemForm = () => {
 
         const navigate = useNavigate();
+        const authHeader = getAuthHeader();
         const handleTitle = (text) => {
             document.title = text;
         };
@@ -97,6 +99,7 @@ const AddItemForm = () => {
                 await axios.post('/api/polozka/add', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
+                        ...authHeader.headers
                     },
                 });
             } catch (error) {

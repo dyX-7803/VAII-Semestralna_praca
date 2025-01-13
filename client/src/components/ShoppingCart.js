@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import UserAuth from "../hooks/UserAuth";
+import getAuthHeader from "../hooks/AuthHeader";
 
 const ShoppingCart = () => {
     const baseUrl = 'http://localhost:5000/';
@@ -8,6 +9,7 @@ const ShoppingCart = () => {
     const [items, setItems] = useState([]);
     const [quants, setQuants] = useState([]);
     const [finalPrice, setFinalPrice] = useState('');
+    const authHeader = getAuthHeader();
 
     useEffect(() => {
         if (isAuthenticated && user?.id) {
@@ -42,7 +44,7 @@ const ShoppingCart = () => {
             const response = await axios.put(`/api/kosik/decreaseQuantity`, {
                 pouzivatel_id: user.id,
                 polozka_id: polozka_id
-            });
+            }, authHeader);
             if (response.data) {
                 setQuants((prevQuants) => {
                     const updatedQuants = [...prevQuants];
@@ -61,7 +63,7 @@ const ShoppingCart = () => {
             const response = await axios.put(`/api/kosik/increaseQuantity`, {
                 pouzivatel_id: user.id,
                 polozka_id: polozka_id
-            });
+            }, authHeader);
             if (response.data) {
                 setQuants((prevQuants) => {
                     const updatedQuants = [...prevQuants];
@@ -81,7 +83,7 @@ const ShoppingCart = () => {
                 params: {
                     pouzivatel_id: user.id,
                     polozka_id: polozka_id,
-                },
+                }, headers: authHeader.headers,
             });
             if (response.status === 200) {
                 setItems((prevItems) => prevItems.filter((_, i) => i !== index));

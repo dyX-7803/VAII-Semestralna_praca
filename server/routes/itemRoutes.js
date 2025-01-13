@@ -7,17 +7,26 @@ const router = express.Router();
 
 router.get('/', itemController.getAllItems);
 router.get('/getDetailsById/:id', itemController.getItemDetailsById);
-router.delete('/deleteItemById/:id', itemController.deleteItemById);
+router.delete('/deleteItemById/:id', 
+    validations.userAuthentification, 
+    validations.userAuthorize(['admin']), 
+    itemController.deleteItemById);
 router.get('/getNews', itemController.getNews);
 
 router.post('/add', upload.fields([
     { name: 'mainImage', maxCount: 1 },
     { name: 'otherImages[]'}
-]), validations.itemValidation, itemController.addItem);
+]), validations.itemValidation,
+    validations.userAuthentification,
+    validations.userAuthorize(['admin']),
+itemController.addItem);
 
 router.put('/updateItemById/:id', upload.fields([
     { name: 'mainImage', maxCount: 1 },
     { name: 'otherImages[]'}
-]), validations.itemValidation, itemController.updateItemById);
+]), validations.itemValidation,
+    validations.userAuthentification, 
+    validations.userAuthorize(['admin']), 
+itemController.updateItemById);
 
 module.exports = router;

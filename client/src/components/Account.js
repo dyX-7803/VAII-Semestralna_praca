@@ -4,11 +4,13 @@ import { BsPersonGear, BsTrash } from 'react-icons/bs';
 import UserAuth from '../hooks/UserAuth';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import getAuthHeader from '../hooks/AuthHeader';
 
 
 const Account = () => {
 
     const navigate = useNavigate();
+    const authHeader = getAuthHeader();
     const {user, isAuthenticated} = UserAuth();
     const [activeSection, setActiveSection] = useState('profileinfo');
     const [email, setEmail] = useState('');
@@ -74,7 +76,7 @@ const Account = () => {
             };
             
             try {
-                const response = await axios.put('/api/pouzivatelia/changePassword', passwordInfo);
+                const response = await axios.put('/api/pouzivatelia/changePassword', passwordInfo, authHeader);
                 if (response.data.message)
                 {
                     alert(response.data.message);
@@ -99,7 +101,7 @@ const Account = () => {
                 if (!window.confirm('Naozaj chcete odstrániť svoj účet? Táto akcia je nezvratná.')) {
                     return;
                 }
-                const response = await axios.delete(`/api/pouzivatelia/deleteUser/${user.id}`);
+                const response = await axios.delete(`/api/pouzivatelia/deleteUser/${user.id}`, authHeader);
                 if (response.data.message)
                 {
                     alert(response.data.message);

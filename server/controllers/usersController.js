@@ -47,6 +47,8 @@ exports.login = async (req, res) => {
             {expiresIn: '1h'}
         );
 
+        console.log(token);
+
         res.json({ token });
 
     } catch (error) {

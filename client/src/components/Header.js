@@ -1,17 +1,25 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import UserAuth from '../hooks/UserAuth';
 import { BsPersonGear, BsCartFill } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Header = () => {
 
     const navigate = useNavigate();
     const {user, isAuthenticated} = UserAuth();
+    const location = useLocation();
 
     const [activeItem, setActiveItem] = useState(() => {
         return localStorage.getItem('activeItem') || 'domov';
     });
+
+    useEffect(() => {
+        if (location.pathname === '/katalog')
+        {
+            setActiveItem('katalog');
+        }
+    }, [location]);
 
     const handleNavClick = (item) => {
         setActiveItem(item);
@@ -68,12 +76,6 @@ const Header = () => {
                     
                 </ul>
 
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 search-bar">
-                    <input type="search" class="form-control form-control-dark input-search" placeholder="Čo hľadáte? (značka, druh...)" aria-label="Search"/>
-                    <button class="search-button" type="submit">
-                        <img src="/images/search-icon.png" alt="SearchIcon" class="search-icon"/>
-                    </button>
-                </form>
 
                 {isAuthenticated ? (
                     <div className="text-end">
