@@ -23,6 +23,8 @@ const LoginForm = () => {
 
             localStorage.setItem('authToken', token);
 
+            alert('Uspešné prihlásenie.');
+
             navigate('/');
             window.location.reload();
         } catch (error) {

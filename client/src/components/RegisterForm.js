@@ -61,6 +61,7 @@ const RegisterForm = () => {
         
         try {
             await axios.post('/api/pouzivatelia/register', userInfo);
+            alert('Uspešná registrácia.');
         } catch (error) {
             console.error('Chyba pri registrácii: ', error);
             alert('Niečo sa pokazilo pri registrácii!');

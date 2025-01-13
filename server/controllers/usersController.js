@@ -47,8 +47,6 @@ exports.login = async (req, res) => {
             {expiresIn: '1h'}
         );
 
-        console.log(token);
-
         res.json({ token });
 
     } catch (error) {
@@ -109,6 +107,16 @@ exports.deleteUser = async (req, res) => {
     } catch (error) {
         console.error('Chyba pri odstraňovaní používateľa:', error);
         res.status(500).json({ message: 'Chyba pri odstraňovaní používateľa.' });
+    }
+};
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT id, email, role FROM pouzivatelia WHERE role = $1', ['user']);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Chyba pri získavaní všetkých používateľov:', error);
+        res.status(500).json({ message: 'Chyba pri získavaní používateľov.' });
     }
 };
 

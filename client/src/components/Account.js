@@ -89,7 +89,7 @@ const Account = () => {
                 }
                 else {
                     console.error('Chyba pri meneni hesla: ', error);
-                    alert('Niečo sa pokazilo pri registrácii!');
+                    alert('Chyba pri meneni hesla!');
                 }
                 
             }
@@ -148,12 +148,12 @@ const Account = () => {
                         </div>
                         <div class="form-group">
                             <label>Nové heslo</label>
-                            <input type="text" className={`form-control ${errors.newPassword ? 'input-error' : ''}`} id="newpass" value={newPassword} onChange={handleNewPasswordChange} required/>
+                            <input type="password" className={`form-control ${errors.newPassword ? 'input-error' : ''}`} id="newpass" value={newPassword} onChange={handleNewPasswordChange} required/>
                             {errors.newPassword && <p className='error'>{errors.newPassword}</p>}
                         </div>
                         <div class="form-group">
                             <label>Zopakuj nové heslo</label>
-                            <input type="text" className={`form-control ${errors.newPasswordRepeat ? 'input-error' : ''}`} id="newpassrepeat" value={newPasswordRepeat} onChange={handleNewPasswordRepeatChange} required/>
+                            <input type="password" className={`form-control ${errors.newPasswordRepeat ? 'input-error' : ''}`} id="newpassrepeat" value={newPasswordRepeat} onChange={handleNewPasswordRepeatChange} required/>
                             {errors.newPasswordRepeat && <p className='error'>{errors.newPasswordRepeat}</p>}
                         </div>
 

@@ -87,7 +87,7 @@ const Header = () => {
                         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <li><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => {openAccountDetails(); handleNavClick('')}}>Profil</a></li>
                             {user.role === 'admin' ? (
-                                <li><a className="dropdown-item" style={{cursor: 'pointer'}}>Správa používateľov</a></li>
+                                <li><a className="dropdown-item" onClick={() => {navigate('/userstable'); handleTitle('WearWave | Správa používateľov')}} style={{cursor: 'pointer'}}>Správa používateľov</a></li>
                             ) : (<div/>)}
                             <li><a className="dropdown-item" style={{color: 'red', cursor: 'pointer'}} 
                             onClick={() => logout()}>Odhlásiť sa</a></li>

@@ -13,6 +13,7 @@ import ProtectedRoute from './hooks/ProtectedRoute';
 import ItemDetail from './components/ItemDetail';
 import ShoppingCart from './components/ShoppingCart';
 import Account from './components/Account';
+import UsersTable from './components/UsersTable';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
               <Route path='/katalog/detail/:id' element={<ItemDetail/>}/>
               <Route path='/shoppingcart' element={<ProtectedRoute element={ShoppingCart}/>}/>
               <Route path='/account' element={<ProtectedRoute element={Account}/>}/>
+              <Route path='/userstable' element={<ProtectedRoute element={UsersTable}/>}/>
             </Routes>
           <Footer/>
       </Router>

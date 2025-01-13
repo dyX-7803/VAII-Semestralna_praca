@@ -42,33 +42,33 @@ const itemValidation = (req, res, next) => {
     next();
 };
 
-// const quantityValidation = (req, res, next) => {
+const passwordValidationRegister = (req, res, next) => {
 
-//     const {nazov, popis, cena, pocet_ks} = req.body;
+    const {password} = req.body;
 
-//     if (!validators.validateRequired(nazov) || !validators.validateRequired(cena) || !validators.validateRequired(pocet_ks)) {
-//         deleteImages(mainImage, otherImages);
-//         return res.status(400).json({ error: 'Názov, popis, cena a pocet kusov sú povinné!' });
-//     }
+    if (!validators.validateRequired(password)) {
+        return res.status(400).json({ error: 'Heslo je povinné.' });
+    }
+    if (!validators.validatePassword(password)) {
+        return res.status(400).json({ error: 'Heslo musi mat aspon 5 a najviac 30 znakov a musi obsahovat cislo.' });
+    }
 
-//     if (!validators.validateIsNumberAndPositive(cena)) {
-//         deleteImages(mainImage, otherImages);
-//         return res.status(400).json({ error: 'Cena musí byť nezáporné číslo!' });
-//     }
+    next();
+};
 
-//     if (!validators.validateIsIntegerAndPositive(pocet_ks)) {
-//         deleteImages(mainImage, otherImages);
-//         return res.status(400).json({ error: 'Počet kusov musí byť celé nezáporné číslo!' });
-//     }
+const passwordValidationUpdate = (req, res, next) => {
 
-//     if (mainImage && !validators.validateImage(mainImage))
-//     {
-//         deleteImages(mainImage, otherImages);
-//         return res.status(400).json({ error: 'Nahraný súbor nie je platný obrázok (musí byť JPG alebo PNG).' });
-//     }
+    const {newPassword} = req.body;
 
-//     next();
-// };
+    if (!validators.validateRequired(newPassword)) {
+        return res.status(400).json({ error: 'Heslo je povinné.' });
+    }
+    if (!validators.validatePassword(newPassword)) {
+        return res.status(400).json({ error: 'Heslo musi mat aspon 5 a najviac 30 znakov a musi obsahovat cislo.' });
+    }
+
+    next();
+};
 
 const deleteImages = (mainImage, otherImages) => {
     if (mainImage)
@@ -92,7 +92,6 @@ const userAuthentification = (req, res, next) => {
         return res.status(401).json({ message: 'Prístup zamietnutý!' });
     }
 
-    console.log(token);
     try {
         const decoded = jwt.verify(token, 'myKey');
         req.user = decoded;
@@ -113,4 +112,4 @@ const userAuthorize = (roles) => {
 };
 
 
-module.exports = {itemValidation, userAuthentification, userAuthorize};
+module.exports = {itemValidation, userAuthentification, userAuthorize, passwordValidationRegister, passwordValidationUpdate};
