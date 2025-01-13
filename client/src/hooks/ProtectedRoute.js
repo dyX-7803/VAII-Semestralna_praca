@@ -1,3 +1,4 @@
+import Account from '../components/Account';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
 import ShoppingCart from '../components/ShoppingCart';
@@ -19,7 +20,7 @@ const ProtectedRoute = ({ element: Component, ...rest }) => {
     }
   }
 
-  if (Component === ShoppingCart)
+  if (Component === ShoppingCart || Component == Account)
   {
     if (isAuthenticated)
     {

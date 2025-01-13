@@ -27,9 +27,9 @@ const RegisterForm = () => {
             errors.email = "Zadajte platnú emailovú adresu.";
         } 
 
-        if (password.length < 5)
+        if (password.length < 5 || password.length > 30)
         {
-            errors.password = "Heslo musí mať aspoň 5 znakov.";
+            errors.password = "Heslo musí mať aspoň 5 a najviac 30 znakov.";
         } else if (!/\d/.test(password))
         {
             errors.password = "Heslo musí obsahovať aspoň jedno číslo.";
@@ -60,7 +60,6 @@ const RegisterForm = () => {
 
         
         try {
-            console.log(userInfo);
             await axios.post('/api/pouzivatelia/register', userInfo);
         } catch (error) {
             console.error('Chyba pri registrácii: ', error);

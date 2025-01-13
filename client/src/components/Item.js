@@ -53,10 +53,10 @@ const Item = ({id, name, desc, price, quant}) => {
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
-                alert("Položka už existuje v košíku.");
+                alert(error.response.data.message);
             } else {
                 console.error("Chyba pri pridávaní položky do košíka:", error);
-                alert("Nastala chyba pri pridávaní položky do košíka.");
+                alert(error.response.status);
             }
         }
     };

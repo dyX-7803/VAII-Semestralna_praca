@@ -12,6 +12,7 @@ import LoginForm from './components/LoginForm';
 import ProtectedRoute from './hooks/ProtectedRoute';
 import ItemDetail from './components/ItemDetail';
 import ShoppingCart from './components/ShoppingCart';
+import Account from './components/Account';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
               <Route path='/prihlasit' element={<ProtectedRoute element={LoginForm}/>}/>
               <Route path='/katalog/detail/:id' element={<ItemDetail/>}/>
               <Route path='/shoppingcart' element={<ProtectedRoute element={ShoppingCart}/>}/>
+              <Route path='/account' element={<ProtectedRoute element={Account}/>}/>
             </Routes>
           <Footer/>
       </Router>

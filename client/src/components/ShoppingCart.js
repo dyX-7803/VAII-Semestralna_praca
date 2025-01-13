@@ -20,7 +20,7 @@ const ShoppingCart = () => {
                 } catch (error) {
                     console.log(error);
                 }
-            };
+        };
             fetchItems();
         }
     }, [isAuthenticated, user]);

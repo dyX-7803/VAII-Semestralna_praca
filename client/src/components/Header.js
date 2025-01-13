@@ -30,6 +30,12 @@ const Header = () => {
         window.location.reload();
     }; 
 
+    const openAccountDetails = () => {
+        navigate('/account');
+        handleTitle('WearWave | Účet')
+    };
+    
+
     return (
         <header class="p-3 bg-dark text-white top-header">
             <div class="container">
@@ -77,9 +83,13 @@ const Header = () => {
                           <BsPersonGear size={24} color="black" />
                         </button>
                         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a className="dropdown-item" href="#">Účet</a></li>
+                            <li><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => {openAccountDetails(); handleNavClick('')}}>Profil</a></li>
+                            {user.role === 'admin' ? (
+                                <li><a className="dropdown-item" style={{cursor: 'pointer'}}>Správa používateľov</a></li>
+                            ) : (<div/>)}
                             <li><a className="dropdown-item" style={{color: 'red', cursor: 'pointer'}} 
                             onClick={() => logout()}>Odhlásiť sa</a></li>
+                            
                         </ul>
                       </div>
                       <Link to="/shoppingcart" className="no-decoration-text" onClick={() => handleTitle('WearWave | Košík')}>
